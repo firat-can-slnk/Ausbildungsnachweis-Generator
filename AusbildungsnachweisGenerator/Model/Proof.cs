@@ -8,7 +8,7 @@ namespace AusbildungsnachweisGenerator.Model
 {
     public class Proof
     {
-        public Proof(string noteNr, Apprenticeship apprenticeship, Apprentice apprentice, Address address, Instructor instructor, Job job, Company company, int year, DateTime startDate, DateTime endDate, string section = null, List<int> hourRates = null)
+        public Proof(string noteNr, Apprenticeship apprenticeship, Apprentice apprentice, Address address, Instructor instructor, Job job, Company company, int year, DateTime startDate, DateTime endDate, string section = null, int? hourRate = null)
         {
             NoteNr = noteNr;
             Apprenticeship = apprenticeship;
@@ -21,7 +21,7 @@ namespace AusbildungsnachweisGenerator.Model
             StartDate = startDate;
             EndDate = endDate;
             Section = section ?? "";
-            HourRates = hourRates ?? Enumerable.Repeat(8, 6).ToList();
+            HourRates =  Enumerable.Repeat(hourRate ?? 8, 6).ToList();
         }
 
         public string NoteNr { get; set; }

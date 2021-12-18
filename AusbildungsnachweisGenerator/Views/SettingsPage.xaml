@@ -12,6 +12,7 @@
 
     <Page.Resources>
         <x:Double x:Key="ControlsWidth">200</x:Double>
+        <x:Double x:Key="ControlsWidth2">410</x:Double>
     </Page.Resources>
     <ScrollViewer SizeChanged="ScrollViewer_SizeChanged">
         <Grid Padding="50">
@@ -96,9 +97,16 @@
                         Margin="0,20"
                         Style="{StaticResource TitleTextBlockStyle}"
                         Text="Ausbildung" />
-                    <DatePicker Date="{Binding Path=Apprenticeship.StartDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Ausbildungsbeginn" />
-                    <DatePicker Date="{Binding Path=Apprenticeship.EndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Ausbildungsende" />
-                    <CheckBox Content="Arbeit am Samstag" IsChecked="{Binding Path=Apprenticeship.WithSaturday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <CalendarDatePicker
+                            Width="{StaticResource ControlsWidth}"
+                            Date="{Binding Path=Apprenticeship.StartDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Header="Ausbildungsbeginn" />
+                        <CalendarDatePicker
+                            Width="{StaticResource ControlsWidth}"
+                            Date="{Binding Path=Apprenticeship.EndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Header="Ausbildungsende" />
+                    </StackPanel>
                     <NumberBox
                         Width="{StaticResource ControlsWidth}"
                         HorizontalAlignment="Left"
@@ -107,6 +115,7 @@
                         Minimum="1"
                         SpinButtonPlacementMode="Inline"
                         Value="{Binding Path=Apprenticeship.HourRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <CheckBox Content="Arbeit am Samstag" IsChecked="{Binding Path=Apprenticeship.WithSaturday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
 
             </Grid>
@@ -124,7 +133,7 @@
                         Style="{StaticResource TitleTextBlockStyle}"
                         Text="Ausbildungsbetrieb" />
                     <TextBox
-                        Width="{StaticResource ControlsWidth}"
+                        Width="{StaticResource ControlsWidth2}"
                         HorizontalAlignment="Left"
                         Header="Firma"
                         PlaceholderText="{Binding Sample.Company.Name}"
@@ -159,13 +168,13 @@
                         Style="{StaticResource TitleTextBlockStyle}"
                         Text="Ausbildungsberuf" />
                     <TextBox
-                        Width="{StaticResource ControlsWidth}"
+                        Width="{StaticResource ControlsWidth2}"
                         HorizontalAlignment="Left"
                         Header="Name"
                         PlaceholderText="{Binding Sample.Job.Name}"
                         Text="{Binding Path=Job.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <TextBox
-                        Width="{StaticResource ControlsWidth}"
+                        Width="{StaticResource ControlsWidth2}"
                         HorizontalAlignment="Left"
                         Header="Fachbereich"
                         PlaceholderText="{Binding Sample.Job.Subject}"

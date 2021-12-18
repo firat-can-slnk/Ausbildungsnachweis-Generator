@@ -6,8 +6,48 @@
     xmlns:local="using:AusbildungsnachweisGenerator"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    DataContext="{Binding RelativeSource={RelativeSource Self}}"
     mc:Ignorable="d">
 
-    <Grid />
+    <Page.Resources>
+        <x:Double x:Key="ControlsWidth">200</x:Double>
+        <x:Double x:Key="ControlsWidth2">410</x:Double>
+    </Page.Resources>
+
+    <StackPanel Padding="50" Spacing="20">
+        <TextBlock
+            Margin="0,20"
+            Style="{StaticResource TitleTextBlockStyle}"
+            Text="Zeitraum" />
+        <StackPanel Orientation="Horizontal" Spacing="10">
+            <CalendarDatePicker
+                Width="{StaticResource ControlsWidth}"
+                Date="{Binding Path=StartDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Header="Startdatum" />
+            <CalendarDatePicker
+                Width="{StaticResource ControlsWidth}"
+                Date="{Binding Path=EndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Header="Enddatum" />
+        </StackPanel>
+
+        <TextBlock
+            Margin="0,20"
+            Style="{StaticResource TitleTextBlockStyle}"
+            Text="Speicherort" />
+        <StackPanel Orientation="Horizontal" Spacing="10">
+            <TextBox
+                Width="{StaticResource ControlsWidth2}"
+                Header="Dateipfad"
+                Text="{Binding Path=FilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Button
+                VerticalAlignment="Bottom"
+                Click="FilePathButton_Click"
+                Content="Durchsuchen" />
+        </StackPanel>
+        <Button
+            Margin="0,20"
+            Click="GenerateButton_Click"
+            Content="Berichte generieren"
+            IsEnabled="{Binding Path=IsFormValid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Style="{StaticResource AccentButtonStyle}" />
+    </StackPanel>
 </Page>

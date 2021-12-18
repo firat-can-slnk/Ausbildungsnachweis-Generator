@@ -17,7 +17,8 @@
             <NavigationViewItem
                 x:Name="StartPageItem"
                 Content="Startseite"
-                Icon="Home" />
+                Icon="Home"
+                IsSelected="True" />
         </NavigationView.MenuItems>
         <Frame x:Name="contentFrame" />
     </NavigationView>

@@ -10,7 +10,7 @@ namespace AusbildungsnachweisGenerator.Extensions
 {
     public static class ProofExtensions
     {
-        public static void GenerateDocument(this Proof proof)
+        public static void GenerateDocument(this Proof proof, string path)
         {
             var document = new Document();
             document.LoadFromFile("Assets/ProofSample.docx");
@@ -21,7 +21,7 @@ namespace AusbildungsnachweisGenerator.Extensions
                 document.Replace(item.code, text, true, true);
             }
 
-            document.SaveToFile(proof.FileName);
+            document.SaveToFile($@"{path}\{proof.FileName}.docx");
         }
 
         public static List<(string text, string code)> GetReplaceData(this Proof proof)

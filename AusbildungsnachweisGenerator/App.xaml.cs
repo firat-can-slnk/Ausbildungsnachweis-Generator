@@ -44,8 +44,11 @@ namespace AusbildungsnachweisGenerator
         {
             m_window = new MainWindow();
             m_window.Activate();
+            Window = m_window;
         }
 
         private Window m_window;
+
+        public static Window Window;
     }
 }

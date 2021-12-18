@@ -43,15 +43,20 @@ namespace AusbildungsnachweisGenerator
                 navOptions.IsNavigationStackEnabled = false;
             }
             Type pageType = typeof(StartPage);
+            NavigationViewMain.Header = null;
 
-            if (args.InvokedItem == StartPageItem)
+            if (args.IsSettingsInvoked)
+            {
+                pageType = typeof(SettingsPage);
+                NavigationViewMain.Header = "Einstellungen";
+            }
+            else if (args.InvokedItem.Equals(StartPageItem.Content.ToString()))
             {
                 pageType = typeof(StartPage);
+                NavigationViewMain.Header = "Startseite";
             }
-            else if (args.IsSettingsInvoked)
-            {
-                pageType= typeof(SettingsPage);
-            }
+
+            NavigationViewMain.AlwaysShowHeader = !string.IsNullOrEmpty(NavigationViewMain.Header?.ToString());
 
             contentFrame.NavigateToType(pageType, null, navOptions);
 
@@ -60,6 +65,7 @@ namespace AusbildungsnachweisGenerator
         private void NavigationViewMain_Loaded(object sender, RoutedEventArgs e)
         {
             contentFrame.NavigateToType(typeof(StartPage), null, null);
+            NavigationViewMain.Header = "Startseite";
         }
     }
 }
