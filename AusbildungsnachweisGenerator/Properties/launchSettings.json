@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "AusbildungsnachweisGenerator (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "AusbildungsnachweisGenerator (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

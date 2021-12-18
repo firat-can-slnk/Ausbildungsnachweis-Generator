@@ -1,0 +1,24 @@
+﻿<Window
+    x:Class="AusbildungsnachweisGenerator.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:AusbildungsnachweisGenerator"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <NavigationView
+        x:Name="NavigationViewMain"
+        ExpandedModeThresholdWidth="1300"
+        ItemInvoked="NavigationView_ItemInvoked"
+        Loaded="NavigationViewMain_Loaded"
+        PaneDisplayMode="Left">
+        <NavigationView.MenuItems>
+            <NavigationViewItem
+                x:Name="StartPageItem"
+                Content="Startseite"
+                Icon="Home" />
+        </NavigationView.MenuItems>
+        <Frame x:Name="contentFrame" />
+    </NavigationView>
+</Window>
