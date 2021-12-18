@@ -34,7 +34,7 @@ namespace AusbildungsnachweisGenerator.Extensions
                 (proof.Job.Name, "{{jobName}}"),
                 (proof.Job.Subject, "{{jobSubject}}"),
                 (proof.Company.Name, "{{company}}"),
-                (proof.Apprentice.FullName, "{{apprentice}}"),
+                (proof.Instructor.FullName, "{{apprentice}}"),
                 (proof.Apprenticeship.StartDate.ToString("d"), "{{appStart}}"),
                 (proof.Apprenticeship.EndDate.ToString("d"), "{{appEnd}}"),
                 (proof.Year.ToString(), "{{year}}"),

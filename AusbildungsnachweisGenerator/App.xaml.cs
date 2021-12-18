@@ -50,5 +50,7 @@ namespace AusbildungsnachweisGenerator
         private Window m_window;
 
         public static Window Window;
+        public static NavigationView NavigationView;
+        public static Frame ContentFrame;
     }
 }

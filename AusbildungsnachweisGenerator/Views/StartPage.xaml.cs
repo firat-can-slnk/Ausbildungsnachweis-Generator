@@ -19,6 +19,8 @@ using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using AusbildungsnachweisGenerator;
+using AusbildungsnachweisGenerator.Helper;
+using System.Threading.Tasks;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -30,82 +32,145 @@ namespace AusbildungsnachweisGenerator.Views
     /// </summary>
     public sealed partial class StartPage : Page
     {
+        private double progress = double.NaN;
+        public double Progress
+        {
+            get => progress;
+            set
+            {
+                progress = value;
+                if (!double.IsNaN(progress))
+                {
+                    GenerateButton.IsEnabled = false;
+                    if (progress > 2)
+                    {
+                        ProgressRingMain.IsActive = true;
+                        ProgressRingMain.IsIndeterminate = false;
+                        ProgressRingMain.Value = progress;
+                    }
+                    else
+                    {
+                        ProgressRingMain.IsActive = true;
+                        ProgressRingMain.IsIndeterminate = true;
+                        ProgressRingMain.Value = 0;
+                    }
+                }
+                else
+                {
+                    ProgressRingMain.IsActive = false;
+                    ProgressRingMain.IsIndeterminate = true;
+                    ProgressRingMain.Value = 0;
+                    SetGenerateButtonIsEnabledBinding();
+                }
+            }
+        }
+
         public StartPage()
         {
             this.InitializeComponent();
-            DataContext = new StartPageViewModel();
+            this.DataContext = new StartPageViewModel();
+            SetGenerateButtonIsEnabledBinding();
+        }
+        private void SetGenerateButtonIsEnabledBinding()
+        {
+            var binding = new Binding();
+            binding.Path = new PropertyPath("IsFormValid");
+            binding.Mode = BindingMode.OneWay;
+            binding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+            BindingOperations.SetBinding(GenerateButton, Button.IsEnabledProperty, binding);
         }
         private void GenerateButton_Click(object sender, RoutedEventArgs e)
         {
-            var dataContext = (StartPageViewModel)DataContext;
+            Progress = 1;
+            var dt = (StartPageViewModel)DataContext;
+            new Task(() => GenerateProofs(dt)).Start();
+        }
 
-            var settings = AppHelper.GetSettings();
-            var noteNr = 0;
-
-            var startDate = dataContext.StartDate.DateTime.StartOfWeek();
-            var endDate = dataContext.EndDate.DateTime.EndOfWeek();
-
-            var years = startDate.GetYearlyDateRangeTo(endDate);
-            foreach (var year in years)
+        private void GenerateProofs(StartPageViewModel vm)
+        {
+            try
             {
-                var yearPath = @$"{dataContext.FilePath}\{year.Year}";
-                Directory.CreateDirectory(yearPath);
+                StartPageViewModel dataContext = vm;
 
-                noteNr++;
+                var generated = 0;
+                var max = 0;
 
-                var months = startDate.GetMonthlyDateRangeTo(endDate);
-                foreach (var month in months)
+                var profile = dataContext.SelectedProfile;
+                var noteNr = 0;
+
+                var startDate = dataContext.StartDate.DateTime.StartOfWeek();
+                var endDate = dataContext.EndDate.DateTime.EndOfWeek();
+
+                var years = startDate.GetYearlyDateRangeTo(endDate);
+                foreach (var year in years)
                 {
-                    if(month.Year == year.Year)
+                    var yearPath = @$"{dataContext.FilePath}\{year.Year}";
+                    Directory.CreateDirectory(yearPath);
+
+                    noteNr++;
+
+                    var months = startDate.GetMonthlyDateRangeTo(endDate);
+                    foreach (var month in months)
                     {
-                        var monthPath = @$"{yearPath}\{month.Month} {month.ToString("MMMM")}";
-                        Directory.CreateDirectory(monthPath);
-
-                        var weeks = startDate.GetWeeklyDateRangeTo(endDate);
-
-                        foreach (var week in weeks)
+                        if (month.Year == year.Year)
                         {
-                            if (week.Month == month.Month && week.Year == month.Year)
-                            {
-                                var proof = new Proof(noteNr.ToString(), 
-                                    settings.Apprenticeship, 
-                                    settings.Apprentice, 
-                                    settings.Address, 
-                                    settings.Instructor, 
-                                    settings.Job, 
-                                    settings.Company, 
-                                    noteNr, 
-                                    week.StartOfWeek(), 
-                                    week.EndOfWeek(), 
-                                    hourRate: settings.Apprenticeship.HourRate);
-                                proof.GenerateDocument(monthPath);
-                            }
-                        }
+                            var monthPath = @$"{yearPath}\{month.Month} {month.ToString("MMMM")}";
+                            Directory.CreateDirectory(monthPath);
 
+                            var weeks = startDate.GetWeeklyDateRangeTo(endDate);
+
+                            if (max == 0)
+                                max = weeks.Count();
+
+                            foreach (var week in weeks)
+                            {
+                                if (week.Month == month.Month && week.Year == month.Year)
+                                {
+                                    var proof = new Proof(noteNr.ToString(),
+                                        profile.Apprenticeship,
+                                        profile.Apprentice,
+                                        profile.Address,
+                                        profile.Instructor,
+                                        profile.Job,
+                                        profile.Company,
+                                        noteNr,
+                                        week.StartOfWeek(),
+                                        week.EndOfWeek(),
+                                        hourRate: profile.Apprenticeship.HourRate);
+                                    proof.GenerateDocument(monthPath);
+                                    generated++;
+
+                                    DispatcherQueue.TryEnqueue(() =>
+                                    {
+                                        Progress = ((double)generated / (double)max)*100;
+                                    });
+                                }
+                            }
+
+                        }
                     }
                 }
             }
-
-            
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
+            DispatcherQueue.TryEnqueue(() =>
+            {
+                Progress = double.NaN;
+            });
         }
 
         private async void FilePathButton_Click(object sender, RoutedEventArgs e)
         {
             var dataContext = (StartPageViewModel)DataContext;
 
-            // Need to get the hwnd (“window” is a pointer to a WinUI Window object). 
-            // WinRT.Interop namespace is provided by C#/WinRT projected interop wrappers for .NET 5+
-            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.Window);
+            dataContext.FilePath = await IOHelper.SelectFolder();
+        }
 
-            var picker = new FolderPicker();
-
-            // Need to initialize the picker object with the hwnd / IInitializeWithWindow 
-            WinRT.Interop.InitializeWithWindow.Initialize(picker, hwnd);
-
-            // Now we can use the picker object as normal
-            picker.FileTypeFilter.Add("*");
-            var folder = await picker.PickSingleFolderAsync();
-            dataContext.FilePath = folder?.Path;
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            ((StartPageViewModel)DataContext).LoadProfiles();
         }
     }
 }

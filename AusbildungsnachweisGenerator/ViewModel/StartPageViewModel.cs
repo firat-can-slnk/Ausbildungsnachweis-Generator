@@ -1,4 +1,5 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using AusbildungsnachweisGenerator.Model;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,6 +14,8 @@ namespace AusbildungsnachweisGenerator.ViewModel
         private DateTimeOffset startDate = DateTimeOffset.Now;
         private DateTimeOffset endDate = DateTimeOffset.Now.AddDays(14);
         private string filePath;
+        private Profile selectedProfile;
+        private List<Profile> profiles;
 
         public DateTimeOffset StartDate 
         { 
@@ -43,6 +46,45 @@ namespace AusbildungsnachweisGenerator.ViewModel
             }
         }
         
-        public bool IsFormValid => StartDate < EndDate && FilePath != null && !FilePath.Any(x => Path.GetInvalidPathChars().Contains(x));
+        public List<Profile> Profiles 
+        { 
+            get => profiles;
+            set
+            {
+                SetProperty(ref profiles, value);
+                OnPropertyChanged(nameof(IsFormValid));
+            }
+        }
+        
+        public Profile SelectedProfile 
+        { 
+            get => selectedProfile;
+            set
+            {
+                SetProperty(ref selectedProfile, value);
+                OnPropertyChanged(nameof(IsFormValid));
+                if(selectedProfile != null && !selectedProfile.IsForCreation)
+                {
+                    if (selectedProfile.Apprenticeship?.StartDate is DateTimeOffset start)
+                    {
+                        StartDate = start;
+                    }
+                    if (selectedProfile.Apprenticeship?.EndDate is DateTimeOffset end)
+                    {
+                        EndDate = end;
+                    }
+                }
+            }
+        }
+        
+        public bool IsFormValid => StartDate < EndDate && 
+            FilePath != null && 
+            !FilePath.Any(x => Path.GetInvalidPathChars().Contains(x)) &&
+            SelectedProfile != null;
+
+        public void LoadProfiles()
+        {
+            Profiles = AppHelper.GetSettings().Profiles;
+        }
     }
 }

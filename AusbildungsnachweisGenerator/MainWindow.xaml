@@ -19,6 +19,10 @@
                 Content="Startseite"
                 Icon="Home"
                 IsSelected="True" />
+            <NavigationViewItem
+                x:Name="ProfilePageItem"
+                Content="Profile"
+                Icon="ContactInfo" />
         </NavigationView.MenuItems>
         <Frame x:Name="contentFrame" />
     </NavigationView>

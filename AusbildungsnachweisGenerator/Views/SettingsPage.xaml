@@ -2,197 +2,24 @@
     x:Class="AusbildungsnachweisGenerator.Views.SettingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="using:AusbildungsnachweisGenerator.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:AusbildungsnachweisGenerator"
+    xmlns:local="using:AusbildungsnachweisGenerator.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:xaml="using:Microsoft.UI.Xaml"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
 
-    <Page.Resources>
-        <x:Double x:Key="ControlsWidth">200</x:Double>
-        <x:Double x:Key="ControlsWidth2">410</x:Double>
-    </Page.Resources>
-    <ScrollViewer SizeChanged="ScrollViewer_SizeChanged">
+    <ScrollViewer>
         <Grid Padding="50">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-
-            <Grid x:Name="GridLeft">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
-                <StackPanel Margin="0,0,50,0" Spacing="20">
-                    <TextBlock
-                        Margin="0,20"
-                        Style="{StaticResource TitleTextBlockStyle}"
-                        Text="Auszubildender" />
-                    <StackPanel Orientation="Horizontal" Spacing="10">
-                        <TextBox
-                            Width="{StaticResource ControlsWidth}"
-                            Header="Vorname"
-                            PlaceholderText="{Binding Sample.Apprentice.Firstname}"
-                            Text="{Binding Path=Apprentice.Firstname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <TextBox
-                            Width="{StaticResource ControlsWidth}"
-                            Header="Nachname"
-                            PlaceholderText="{Binding Sample.Apprentice.Name}"
-                            Text="{Binding Path=Apprentice.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    </StackPanel>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <TextBox
-                            Width="{StaticResource ControlsWidth}"
-                            Margin="0,0,5,20"
-                            Header="Straße"
-                            PlaceholderText="{Binding Sample.Address.Street}"
-                            Text="{Binding Path=Address.Street, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <TextBox
-                            Grid.Column="1"
-                            Width="{StaticResource ControlsWidth}"
-                            Margin="5,0,0,20"
-                            Header="Hausnr."
-                            PlaceholderText="{Binding Sample.Address.HouseNumber}"
-                            Text="{Binding Path=Address.HouseNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <TextBox
-                            Grid.Row="1"
-                            Width="{StaticResource ControlsWidth}"
-                            Margin="0,0,5,0"
-                            Header="PLZ"
-                            PlaceholderText="{Binding Sample.Address.PostalCode}"
-                            Text="{Binding Path=Address.PostalCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <TextBox
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            Width="{StaticResource ControlsWidth}"
-                            Margin="5,0,0,0"
-                            Header="Stadt"
-                            PlaceholderText="{Binding Sample.Address.City}"
-                            Text="{Binding Path=Address.City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    </Grid>
+            <StackPanel Spacing="20">
+                <TextBlock
+                    Margin="0,20"
+                    Style="{StaticResource TitleTextBlockStyle}"
+                    Text="Datensicherung" />
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <Button Click="ImportButton_Click" Content="Profile importieren" />
+                    <Button Click="ExportButton_Click" Content="Profile exportieren" />
                 </StackPanel>
-
-                <StackPanel
-                    Grid.Row="1"
-                    Margin="0,50"
-                    Spacing="20">
-                    <TextBlock
-                        Margin="0,20"
-                        Style="{StaticResource TitleTextBlockStyle}"
-                        Text="Ausbildung" />
-                    <StackPanel Orientation="Horizontal" Spacing="10">
-                        <CalendarDatePicker
-                            Width="{StaticResource ControlsWidth}"
-                            Date="{Binding Path=Apprenticeship.StartDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            Header="Ausbildungsbeginn" />
-                        <CalendarDatePicker
-                            Width="{StaticResource ControlsWidth}"
-                            Date="{Binding Path=Apprenticeship.EndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            Header="Ausbildungsende" />
-                    </StackPanel>
-                    <NumberBox
-                        Width="{StaticResource ControlsWidth}"
-                        HorizontalAlignment="Left"
-                        Header="Stundensatz"
-                        Maximum="10"
-                        Minimum="1"
-                        SpinButtonPlacementMode="Inline"
-                        Value="{Binding Path=Apprenticeship.HourRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <CheckBox Content="Arbeit am Samstag" IsChecked="{Binding Path=Apprenticeship.WithSaturday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
-
-            </Grid>
-
-            <Grid x:Name="GridRight" Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
-                <StackPanel Spacing="20">
-                    <TextBlock
-                        Margin="0,20"
-                        Style="{StaticResource TitleTextBlockStyle}"
-                        Text="Ausbildungsbetrieb" />
-                    <TextBox
-                        Width="{StaticResource ControlsWidth2}"
-                        HorizontalAlignment="Left"
-                        Header="Firma"
-                        PlaceholderText="{Binding Sample.Company.Name}"
-                        Text="{Binding Path=Company.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
-
-                <StackPanel
-                    Grid.Row="1"
-                    Margin="0,50"
-                    Spacing="20">
-                    <TextBlock
-                        Margin="0,20"
-                        Style="{StaticResource TitleTextBlockStyle}"
-                        Text="Ausbilder" />
-                    <StackPanel Orientation="Horizontal" Spacing="10">
-                        <TextBox
-                            Width="{StaticResource ControlsWidth}"
-                            Header="Vorname"
-                            PlaceholderText="{Binding Sample.Instructor.Firstname}"
-                            Text="{Binding Path=Instructor.Firstname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <TextBox
-                            Width="{StaticResource ControlsWidth}"
-                            Header="Nachname"
-                            PlaceholderText="{Binding Sample.Instructor.Name}"
-                            Text="{Binding Path=Instructor.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel Grid.Row="2" Spacing="20">
-                    <TextBlock
-                        Margin="0,20"
-                        Style="{StaticResource TitleTextBlockStyle}"
-                        Text="Ausbildungsberuf" />
-                    <TextBox
-                        Width="{StaticResource ControlsWidth2}"
-                        HorizontalAlignment="Left"
-                        Header="Name"
-                        PlaceholderText="{Binding Sample.Job.Name}"
-                        Text="{Binding Path=Job.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <TextBox
-                        Width="{StaticResource ControlsWidth2}"
-                        HorizontalAlignment="Left"
-                        Header="Fachbereich"
-                        PlaceholderText="{Binding Sample.Job.Subject}"
-                        Text="{Binding Path=Job.Subject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
-
-            </Grid>
-            <StackPanel
-                Grid.Row="2"
-                Orientation="Horizontal"
-                Spacing="20">
-
-                <Button
-                    Click="SaveButton_Click"
-                    Content="Speichern"
-                    Style="{StaticResource AccentButtonStyle}" />
-                <!--<Button Content="Felder Leeren" />-->
-                <!--<Button Content="Wiederherstellen" />-->
             </StackPanel>
         </Grid>
     </ScrollViewer>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AusbildungsnachweisGenerator.Model
 {
-    public class Apprenticeship
+    public class Apprenticeship : IEquatable<Apprenticeship>
     {
         public Apprenticeship()
         {
@@ -24,5 +24,10 @@ namespace AusbildungsnachweisGenerator.Model
         public DateTimeOffset EndDate { get; set; }
         public bool WithSaturday { get; set; }
         public int HourRate { get; set; }
+
+        public bool Equals(Apprenticeship obj)
+        {
+            return StartDate == obj.StartDate && EndDate == obj.EndDate && WithSaturday == obj.WithSaturday && HourRate == obj.HourRate;
+        }
     }
 }

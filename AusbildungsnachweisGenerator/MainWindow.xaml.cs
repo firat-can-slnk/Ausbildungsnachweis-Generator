@@ -29,6 +29,8 @@ namespace AusbildungsnachweisGenerator
         public MainWindow()
         {
             this.InitializeComponent();
+            App.NavigationView = NavigationViewMain;
+            App.ContentFrame = contentFrame;
         }
 
         private void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
@@ -54,6 +56,11 @@ namespace AusbildungsnachweisGenerator
             {
                 pageType = typeof(StartPage);
                 NavigationViewMain.Header = "Startseite";
+            }
+            else if (args.InvokedItem.Equals(ProfilePageItem.Content.ToString()))
+            {
+                pageType = typeof(ProfilePage);
+                NavigationViewMain.Header = "Profile";
             }
 
             NavigationViewMain.AlwaysShowHeader = !string.IsNullOrEmpty(NavigationViewMain.Header?.ToString());

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.UI.Xaml;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,21 +9,11 @@ namespace AusbildungsnachweisGenerator.Model
 {
     public class Settings
     {
-        public Job Job;
-        public Instructor Instructor;
-        public Company Company;
-        public Apprenticeship Apprenticeship;
-        public Apprentice Apprentice;
-        public Address Address;
+        public List<Profile> Profiles;
 
-        public Settings(Job job, Instructor instructor, Company company, Apprenticeship apprenticeship, Apprentice apprentice, Address address)
+        public Settings(List<Profile> profiles)
         {
-            Job = job;
-            Instructor = instructor;
-            Company = company;
-            Apprenticeship = apprenticeship;
-            Apprentice = apprentice;
-            Address = address;
+            Profiles = profiles;
         }
     }
 }

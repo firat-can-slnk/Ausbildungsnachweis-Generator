@@ -1,5 +1,5 @@
-﻿using AusbildungsnachweisGenerator.Model;
-using AusbildungsnachweisGenerator.ViewModel;
+﻿using AusbildungsnachweisGenerator.Helper;
+using AusbildungsnachweisGenerator.Model;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -10,12 +10,12 @@ using Microsoft.UI.Xaml.Navigation;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Popups;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -30,33 +30,46 @@ namespace AusbildungsnachweisGenerator.Views
         public SettingsPage()
         {
             this.InitializeComponent();
-            DataContext = new SettingsPageViewModel();
         }
 
-        private void ScrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
+        private async void ImportButton_Click(object sender, RoutedEventArgs e)
         {
-            if (e.NewSize.Width < 960)
+            try
             {
-                Grid.SetColumn(GridRight, 0);
-                Grid.SetRow(GridRight, 1);
+                var file = await IOHelper.SelectFile(new() { ".json" });
+                if (file != null)
+                {
+                    var settings = JsonConvert.DeserializeObject<Settings>(file);
+                    foreach (var profile in settings.Profiles)
+                    {
+                        AppHelper.AddProfile(profile);
+                    }
+                }
             }
-            else
+            catch (Exception)
             {
-                Grid.SetColumn(GridRight, 1);
-                Grid.SetRow(GridRight, 0);
+                await new MessageDialog("Es ist ein Fehler beim importieren aufgetreten", "Fehler").ShowAsync();
             }
         }
 
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        private async void ExportButton_Click(object sender, RoutedEventArgs e)
         {
-            Debug.WriteLine("");
-
-            var dataContext = (SettingsPageViewModel)DataContext;
-
-            var objectToSave = new Settings(dataContext.Job, dataContext.Instructor, dataContext.Company, dataContext.Apprenticeship, dataContext.Apprentice, dataContext.Address);
-
-            AppHelper.SaveSettings(objectToSave);
-            
+            try
+            {
+                var settings = AppHelper.GetSettings();
+                if (settings != null)
+                {
+                    var file = await IOHelper.SelectFolder(new() { ".json" });
+                    if (file != null)
+                    {
+                        File.WriteAllText($@"{file}\Ausbildungsnachweis_Generator_backup.json", JsonConvert.SerializeObject(settings));
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                await new MessageDialog("Es ist ein Fehler beim exportieren aufgetreten", "Fehler").ShowAsync();
+            }
         }
     }
 }

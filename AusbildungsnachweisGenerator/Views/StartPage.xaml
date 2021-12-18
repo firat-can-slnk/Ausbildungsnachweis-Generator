@@ -6,6 +6,7 @@
     xmlns:local="using:AusbildungsnachweisGenerator"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Loaded="Page_Loaded"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -14,6 +15,18 @@
     </Page.Resources>
 
     <StackPanel Padding="50" Spacing="20">
+        <TextBlock
+            Margin="0,20"
+            Style="{StaticResource TitleTextBlockStyle}"
+            Text="Profil" />
+        <StackPanel Orientation="Horizontal" Spacing="10">
+            <ComboBox
+                Width="{StaticResource ControlsWidth2}"
+                ItemsSource="{Binding Profiles}"
+                PlaceholderText="Bitte Profil auswählen"
+                SelectedItem="{Binding Path=SelectedProfile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+
         <TextBlock
             Margin="0,20"
             Style="{StaticResource TitleTextBlockStyle}"
@@ -43,11 +56,17 @@
                 Click="FilePathButton_Click"
                 Content="Durchsuchen" />
         </StackPanel>
-        <Button
-            Margin="0,20"
-            Click="GenerateButton_Click"
-            Content="Berichte generieren"
-            IsEnabled="{Binding Path=IsFormValid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            Style="{StaticResource AccentButtonStyle}" />
+        <StackPanel
+            HorizontalAlignment="Left"
+            Orientation="Horizontal"
+            Spacing="20">
+            <Button
+                x:Name="GenerateButton"
+                Margin="0,20"
+                Click="GenerateButton_Click"
+                Content="Berichte generieren"
+                Style="{StaticResource AccentButtonStyle}" />
+            <ProgressRing x:Name="ProgressRingMain" IsActive="False" />
+        </StackPanel>
     </StackPanel>
 </Page>
