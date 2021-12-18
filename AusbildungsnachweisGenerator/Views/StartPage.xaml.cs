@@ -1,4 +1,6 @@
-﻿using Microsoft.UI.Xaml;
+﻿using AusbildungsnachweisGenerator.Extensions;
+using AusbildungsnachweisGenerator.Model;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
@@ -16,7 +18,7 @@ using Windows.Foundation.Collections;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace AusbildungsnachweisGenerator
+namespace AusbildungsnachweisGenerator.Views
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
@@ -26,6 +28,10 @@ namespace AusbildungsnachweisGenerator
         public StartPage()
         {
             this.InitializeComponent();
+        }
+        private void myButton_Click(object sender, RoutedEventArgs e)
+        {
+            Proof.Sample.GenerateDocument();
         }
     }
 }

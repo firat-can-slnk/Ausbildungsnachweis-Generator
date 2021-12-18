@@ -49,7 +49,7 @@
     <None Update="Assets\ProofSample.docx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Page Update="StartPage.xaml">
+    <Page Update="Views\StartPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="SettingsPage\SettingsPage.xaml">

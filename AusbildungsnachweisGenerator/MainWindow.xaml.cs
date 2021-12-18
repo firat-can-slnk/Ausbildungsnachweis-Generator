@@ -1,5 +1,6 @@
 ﻿using AusbildungsnachweisGenerator.Extensions;
 using AusbildungsnachweisGenerator.Model;
+using AusbildungsnachweisGenerator.Views;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -28,11 +29,6 @@ namespace AusbildungsnachweisGenerator
         public MainWindow()
         {
             this.InitializeComponent();
-        }
-
-        private void myButton_Click(object sender, RoutedEventArgs e)
-        {
-            Proof.Sample.GenerateDocument();
         }
 
         private void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
