@@ -13,7 +13,7 @@ namespace AusbildungsnachweisGenerator.ViewModel
     {
         private DateTimeOffset startDate = DateTimeOffset.Now;
         private DateTimeOffset endDate = DateTimeOffset.Now.AddDays(14);
-        private string filePath;
+        private string filePath = $"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\\Ausbildungsnachweis";
         private Profile selectedProfile;
         private List<Profile> profiles;
 

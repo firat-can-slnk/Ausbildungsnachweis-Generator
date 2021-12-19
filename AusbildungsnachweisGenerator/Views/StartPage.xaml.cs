@@ -21,6 +21,7 @@ using Windows.Storage.Pickers;
 using AusbildungsnachweisGenerator;
 using AusbildungsnachweisGenerator.Helper;
 using System.Threading.Tasks;
+using Windows.UI.Popups;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -137,12 +138,12 @@ namespace AusbildungsnachweisGenerator.Views
                                         week.StartOfWeek(),
                                         week.EndOfWeek(),
                                         hourRate: profile.Apprenticeship.HourRate);
-                                    proof.GenerateDocument(monthPath);
+                                    proof.GenerateDocument(monthPath, ProofType.Daily);
                                     generated++;
 
                                     DispatcherQueue.TryEnqueue(() =>
                                     {
-                                        Progress = ((double)generated / (double)max)*100;
+                                        Progress = ((double)generated / (double)max) * 100;
                                     });
                                 }
                             }
@@ -153,7 +154,14 @@ namespace AusbildungsnachweisGenerator.Views
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e);
+                DispatcherQueue.TryEnqueue(async () =>
+                {
+                    var dialog = new MessageDialog("Es ist ein Fehler beim erstellen der Ausbildungsnachweise aufgetreten", "Fehler");
+
+                    AppHelper.InitializeWithWindow(dialog);
+
+                    await dialog.ShowAsync();
+                });
             }
             DispatcherQueue.TryEnqueue(() =>
             {
@@ -165,7 +173,9 @@ namespace AusbildungsnachweisGenerator.Views
         {
             var dataContext = (StartPageViewModel)DataContext;
 
-            dataContext.FilePath = await IOHelper.SelectFolder();
+            var path = await IOHelper.SelectFolder();
+            if (path != null)
+                dataContext.FilePath = path; 
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)

@@ -12,13 +12,15 @@ namespace AusbildungsnachweisGenerator.Model
         {
         }
 
-        public Job(string name, string subject)
+        public Job(string name, string subject, string section)
         {
             Name = name;
             Subject = subject;
+            Section = section;
         }
 
         public string Name { get; set; }
         public string Subject { get; set; }
+        public string Section { get; set; }
     }
 }

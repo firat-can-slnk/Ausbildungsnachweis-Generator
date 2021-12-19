@@ -1,4 +1,5 @@
-﻿using AusbildungsnachweisGenerator.Model;
+﻿using AusbildungsnachweisGenerator.Helper;
+using AusbildungsnachweisGenerator.Model;
 using Spire.Doc;
 using System;
 using System.Collections.Generic;
@@ -10,10 +11,10 @@ namespace AusbildungsnachweisGenerator.Extensions
 {
     public static class ProofExtensions
     {
-        public static void GenerateDocument(this Proof proof, string path)
+        public static void GenerateDocument(this Proof proof, string path, ProofType type)
         {
             var document = new Document();
-            document.LoadFromFile("Assets/ProofSample.docx");
+            document.LoadFromFile(type.GetAttributeOfType<PathAttribute>().Path);
 
             foreach (var item in proof.GetReplaceData())
             {
@@ -34,19 +35,15 @@ namespace AusbildungsnachweisGenerator.Extensions
                 (proof.Job.Name, "{{jobName}}"),
                 (proof.Job.Subject, "{{jobSubject}}"),
                 (proof.Company.Name, "{{company}}"),
-                (proof.Instructor.FullName, "{{apprentice}}"),
+                (proof.Instructor.FullName, "{{instructor}}"),
                 (proof.Apprenticeship.StartDate.ToString("d"), "{{appStart}}"),
                 (proof.Apprenticeship.EndDate.ToString("d"), "{{appEnd}}"),
                 (proof.Year.ToString(), "{{year}}"),
                 (proof.Section, "{{section}}"),
                 (proof.StartDate.ToString("d"), "{{weekStart}}"),
                 (proof.EndDate.ToString("d"), "{{weekEnd}}"),
-                (proof.HourRates[0].ToString(), "{{hours0}}"),
-                (proof.HourRates[1].ToString(), "{{hours1}}"),
-                (proof.HourRates[2].ToString(), "{{hours2}}"),
-                (proof.HourRates[3].ToString(), "{{hours3}}"),
-                (proof.HourRates[4].ToString(), "{{hours4}}"),
-                (proof.Apprenticeship.WithSaturday ? $"{proof.HourRates[5]}" : "---", "{{hours5}}"),
+                (proof.HourRate?.ToString() ?? "", "{{hours}}"),
+                (proof.Apprenticeship.WithSaturday ? $"{proof.HourRate?.ToString() ?? ""}" : "---", "{{hoursSat}}"),
                 (proof.Apprenticeship.WithSaturday ? "" : "---", "{{saturday}}")
             };
         }

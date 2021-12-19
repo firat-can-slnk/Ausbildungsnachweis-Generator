@@ -31,6 +31,7 @@ namespace AusbildungsnachweisGenerator
             this.InitializeComponent();
             App.NavigationView = NavigationViewMain;
             App.ContentFrame = contentFrame;
+            Title = "Arbeitszeitnachweis Generator";
         }
 
         private void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)

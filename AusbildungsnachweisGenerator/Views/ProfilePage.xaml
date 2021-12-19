@@ -196,6 +196,12 @@
                         Header="Fachbereich"
                         PlaceholderText="{Binding Sample.Job.Subject}"
                         Text="{Binding Path=Job.Subject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBox
+                        Width="{StaticResource ControlsWidth2}"
+                        HorizontalAlignment="Left"
+                        Header="Ausbildende Abteilung"
+                        PlaceholderText="{Binding Sample.Job.Section}"
+                        Text="{Binding Path=Job.Section, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
 
             </Grid>

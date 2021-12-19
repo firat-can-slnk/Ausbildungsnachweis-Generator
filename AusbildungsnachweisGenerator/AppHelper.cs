@@ -56,5 +56,15 @@ namespace AusbildungsnachweisGenerator
             settings.Profiles.Remove(settings.Profiles.First(x => x.Timestamp == profile.Timestamp));
             SaveSettings(settings);
         }
+
+        public static void InitializeWithWindow(object target)
+        {
+            // Need to get the hwnd (“window” is a pointer to a WinUI Window object). 
+            // WinRT.Interop namespace is provided by C#/WinRT projected interop wrappers for .NET 5+
+            var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(App.Window);
+
+            // Need to initialize the picker object with the hwnd / IInitializeWithWindow 
+            WinRT.Interop.InitializeWithWindow.Initialize(target, hwnd);
+        }
     }
 }
