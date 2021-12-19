@@ -127,18 +127,8 @@ namespace AusbildungsnachweisGenerator.Views
                             {
                                 if (week.Month == month.Month && week.Year == month.Year)
                                 {
-                                    var proof = new Proof(noteNr.ToString(),
-                                        profile.Apprenticeship,
-                                        profile.Apprentice,
-                                        profile.Address,
-                                        profile.Instructor,
-                                        profile.Job,
-                                        profile.Company,
-                                        noteNr,
-                                        week.StartOfWeek(),
-                                        week.EndOfWeek(),
-                                        hourRate: profile.Apprenticeship.HourRate);
-                                    proof.GenerateDocument(monthPath, ProofType.Daily);
+                                    var proof = profile.GetProof(noteNr, week.StartOfWeek(), week.EndOfWeek());
+                                    _ = proof.GenerateDocument(monthPath, ProofType.Daily);
                                     generated++;
 
                                     DispatcherQueue.TryEnqueue(() =>
@@ -178,6 +168,20 @@ namespace AusbildungsnachweisGenerator.Views
                 dataContext.FilePath = path; 
         }
 
+        private void SampleButton_Click(object sender, RoutedEventArgs e)
+        {
+            var dataContext = (StartPageViewModel)DataContext;
+
+            var proof = dataContext.SelectedProfile == null || dataContext.SelectedProfile.IsForCreation ? Proof.Sample : dataContext.SelectedProfile.GetProof(1, DateTime.Now.StartOfWeek(), DateTime.Now.EndOfWeek());
+
+            var path = @$"{Path.GetTempPath()}";
+            path = path.Remove(path.Count() - 1);
+
+            var filePath = proof.GenerateDocument(@$"{path}", ProofType.Daily);
+
+            if (File.Exists(filePath))
+                IOHelper.OpenWithDefaultProgram(filePath);
+        }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             ((StartPageViewModel)DataContext).LoadProfiles();

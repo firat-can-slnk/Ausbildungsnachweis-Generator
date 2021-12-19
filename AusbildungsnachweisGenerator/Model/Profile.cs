@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AusbildungsnachweisGenerator.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -53,6 +54,20 @@ namespace AusbildungsnachweisGenerator.Model
             {
                 return $"Azubi {(string.IsNullOrWhiteSpace(Apprentice?.FullName) ? "(leer)" : Apprentice?.FullName)} bei Firma {Company?.Name ?? "(leer)"}, erstellt am {Timestamp:g}";
             }
+        }
+
+        internal Proof GetProof(int noteNr, DateTime start, DateTime end)
+        {
+            return new Proof(noteNr.ToString(),
+                                this.Apprenticeship,
+                                this.Apprentice,
+                                this.Address,
+                                this.Instructor,
+                                this.Job,
+                                this.Company,
+                                noteNr,
+                                start,
+                                end);
         }
     }
 }

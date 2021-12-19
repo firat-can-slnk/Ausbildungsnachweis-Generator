@@ -105,6 +105,10 @@
                     Click="GenerateButton_Click"
                     Content="Berichte generieren"
                     Style="{StaticResource AccentButtonStyle}" />
+                <Button
+                    Margin="0,20"
+                    Click="SampleButton_Click"
+                    Content="Beispiel anzeigen" />
                 <ProgressRing x:Name="ProgressRingMain" IsActive="False" />
             </StackPanel>
             <TextBlock Text="{Binding HelpText}" />

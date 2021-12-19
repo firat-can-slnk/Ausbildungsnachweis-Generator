@@ -12,7 +12,7 @@ namespace AusbildungsnachweisGenerator.Model
         {
         }
 
-        public Apprenticeship(DateTimeOffset startDate, DateTimeOffset endDate, bool withSaturday = false, int hourRate = 8)
+        public Apprenticeship(DateTimeOffset startDate, DateTimeOffset endDate, bool withSaturday = false, int? hourRate = null)
         {
             StartDate = startDate;
             EndDate = endDate;
@@ -23,7 +23,7 @@ namespace AusbildungsnachweisGenerator.Model
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset EndDate { get; set; }
         public bool WithSaturday { get; set; }
-        public int HourRate { get; set; }
+        public int? HourRate { get; set; }
 
         public bool Equals(Apprenticeship obj)
         {

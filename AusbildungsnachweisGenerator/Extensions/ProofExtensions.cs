@@ -13,7 +13,7 @@ namespace AusbildungsnachweisGenerator.Extensions
 {
     public static class ProofExtensions
     {
-        public static void GenerateDocument(this Proof proof, string path, ProofType type)
+        public static string GenerateDocument(this Proof proof, string path, ProofType type)
         {
             var document = new Document();
             document.LoadFromFile(type.GetAttributeOfType<PathAttribute>().Path);
@@ -24,7 +24,9 @@ namespace AusbildungsnachweisGenerator.Extensions
                 document.Replace(item.code, text, true, true);
             }
 
-            document.SaveToFile($@"{path}\{proof.FileName}.docx");
+            var filePath = $@"{path}\{proof.FileName}.docx";
+            document.SaveToFile(filePath);
+            return filePath;
         }
 
         public static ObservableCollection<ProofTreeView> GetTreeViewNode(DateTime start, DateTime end)
@@ -76,11 +78,11 @@ namespace AusbildungsnachweisGenerator.Extensions
                 (proof.Apprenticeship.StartDate.ToString("d"), "{{appStart}}"),
                 (proof.Apprenticeship.EndDate.ToString("d"), "{{appEnd}}"),
                 (proof.Year.ToString(), "{{year}}"),
-                (proof.Section, "{{section}}"),
+                (proof.Job.Section, "{{section}}"),
                 (proof.StartDate.ToString("d"), "{{weekStart}}"),
                 (proof.EndDate.ToString("d"), "{{weekEnd}}"),
-                (proof.HourRate?.ToString() ?? "", "{{hours}}"),
-                (proof.Apprenticeship.WithSaturday ? $"{proof.HourRate?.ToString() ?? ""}" : "---", "{{hoursSat}}"),
+                (proof.Apprenticeship.HourRate?.ToString() ?? "", "{{hours}}"),
+                (proof.Apprenticeship.WithSaturday ? $"{proof.Apprenticeship.HourRate?.ToString() ?? ""}" : "---", "{{hoursSat}}"),
                 (proof.Apprenticeship.WithSaturday ? "" : "---", "{{saturday}}")
             };
         }

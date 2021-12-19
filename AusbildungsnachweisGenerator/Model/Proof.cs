@@ -24,7 +24,7 @@ namespace AusbildungsnachweisGenerator.Model
     }
     public class Proof
     {
-        public Proof(string noteNr, Apprenticeship apprenticeship, Apprentice apprentice, Address address, Instructor instructor, Job job, Company company, int year, DateTime startDate, DateTime endDate, string section = null, int? hourRate = null)
+        public Proof(string noteNr, Apprenticeship apprenticeship, Apprentice apprentice, Address address, Instructor instructor, Job job, Company company, int year, DateTime startDate, DateTime endDate)
         {
             NoteNr = noteNr;
             Apprenticeship = apprenticeship;
@@ -36,8 +36,6 @@ namespace AusbildungsnachweisGenerator.Model
             Year = year;
             StartDate = startDate;
             EndDate = endDate;
-            Section = section ?? "";
-            HourRate =  hourRate;
         }
 
         public string NoteNr { get; set; }
@@ -50,8 +48,6 @@ namespace AusbildungsnachweisGenerator.Model
         public int Year { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public string Section { get; set; }
-        public int? HourRate { get; set; }
 
         public string FileName => $"{FileNameBase}{FileNameEnd(StartDate)}";
         public static string FileNameBase = "Ausbildungsnachweis_";
@@ -66,8 +62,8 @@ namespace AusbildungsnachweisGenerator.Model
                 var instructor = new Instructor("Musterausbilder", "Thomas");
                 var apprenticeAddress = new Address("Musterstr.", "12", "Musterstadt", "10010");
                 var apprentice = new Apprentice("Musterazubi", "Max");
-                var apprenticeship = new Apprenticeship(new(new(2020, 01, 01)), new(new(2023, 01, 01)));
-                return new Proof("1", apprenticeship, apprentice, apprenticeAddress, instructor, job, company, 2, new(2021, 12, 13), new(2021, 12, 17), "Abteilung", 8);
+                var apprenticeship = new Apprenticeship(new(new(2020, 01, 01)), new(new(2023, 01, 01)), hourRate: 8);
+                return new Proof("2", apprenticeship, apprentice, apprenticeAddress, instructor, job, company, 1, new(2021, 12, 13), new(2021, 12, 17));
             }
         }
     }
