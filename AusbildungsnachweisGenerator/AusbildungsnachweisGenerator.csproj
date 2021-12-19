@@ -13,12 +13,12 @@
 	  <WindowsPackageType>None</WindowsPackageType>
   </PropertyGroup>
   <ItemGroup>
-    <Content Remove="Assets\ProofSample.docx" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="ProfilePage.xaml" />
-    <None Remove="StartPage.xaml" />
-    <None Remove="Views\SettingsPage.xaml" />
+    <Content Remove="Assets\Ausbildungsnachweis_Variable_Cover.docx" />
+    <Content Remove="Assets\Ausbildungsnachweis_Variable_Daily.docx" />
+    <Content Remove="Assets\Ausbildungsnachweis_Variable_DailyWithPlan.docx" />
+    <Content Remove="Assets\Ausbildungsnachweis_Variable_Notice.docx" />
+    <Content Remove="Assets\Ausbildungsnachweis_Variable_Weekly.docx" />
+    <Content Remove="Assets\Ausbildungsnachweis_Variable_WeeklyWithPlan.docx" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +29,27 @@
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Ausbildungsnachweis_Variable_Cover.docx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\Ausbildungsnachweis_Variable_Daily.docx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\Ausbildungsnachweis_Variable_DailyWithPlan.docx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\Ausbildungsnachweis_Variable_Notice.docx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\Ausbildungsnachweis_Variable_Weekly.docx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\Ausbildungsnachweis_Variable_WeeklyWithPlan.docx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
@@ -62,5 +83,25 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controls\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Ausbildungsnachweis_Variable_Cover.docx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Ausbildungsnachweis_Variable_Daily.docx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Ausbildungsnachweis_Variable_DailyWithPlan.docx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Ausbildungsnachweis_Variable_Notice.docx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Ausbildungsnachweis_Variable_Weekly.docx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Ausbildungsnachweis_Variable_WeeklyWithPlan.docx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 </Project>
