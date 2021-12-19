@@ -1,8 +1,10 @@
 ﻿using AusbildungsnachweisGenerator.Helper;
 using AusbildungsnachweisGenerator.Model;
+using Microsoft.UI.Xaml.Controls;
 using Spire.Doc;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +25,41 @@ namespace AusbildungsnachweisGenerator.Extensions
             }
 
             document.SaveToFile($@"{path}\{proof.FileName}.docx");
+        }
+
+        public static ObservableCollection<ProofTreeView> GetTreeViewNode(DateTime start, DateTime end)
+        {
+            var root = new ProofTreeView("Ausbildungsnachweise", ProofTreeViewType.Root);
+
+            var weeks = start.GetWeeklyDateRangeTo(end);
+            var months = start.GetMonthlyDateRangeTo(end);
+            var years = start.GetYearlyDateRangeTo(end);
+
+            foreach (var year in years)
+            {
+                var yearChild = new ProofTreeView(year.Year.ToString(), ProofTreeViewType.Folder);
+                foreach (var month in months)
+                {
+                    if (month.Year != year.Year)
+                        continue;
+
+                    var monthChild = new ProofTreeView($"{month.Month} {month.ToString("MMMM")}", ProofTreeViewType.Folder);
+
+                    foreach (var week in weeks)
+                    {
+                        if (week.Month != month.Month || week.Year != month.Year)
+                            continue;
+
+                        monthChild.Children.Add(new ProofTreeView($"{Proof.FileNameBase}{Proof.FileNameEnd(week)}.docx", ProofTreeViewType.File));
+                    }
+
+                    yearChild.Children.Add(monthChild);
+                }
+
+                root.Children.Add(yearChild);
+            }
+
+            return new() { root };
         }
 
         public static List<(string text, string code)> GetReplaceData(this Proof proof)

@@ -19,6 +19,12 @@
     <Content Remove="Assets\Ausbildungsnachweis_Variable_Notice.docx" />
     <Content Remove="Assets\Ausbildungsnachweis_Variable_Weekly.docx" />
     <Content Remove="Assets\Ausbildungsnachweis_Variable_WeeklyWithPlan.docx" />
+    <Content Remove="Assets\file.png" />
+    <Content Remove="Assets\folder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Assets\file.png" />
+    <None Remove="Assets\folder.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,6 +55,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Assets\Ausbildungsnachweis_Variable_WeeklyWithPlan.docx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\file.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\folder.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
 

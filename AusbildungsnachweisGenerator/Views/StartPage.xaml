@@ -3,8 +3,10 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ex="using:AusbildungsnachweisGenerator.Extensions"
     xmlns:local="using:AusbildungsnachweisGenerator"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:AusbildungsnachweisGenerator.ViewModel"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     Loaded="Page_Loaded"
     mc:Ignorable="d">
@@ -12,61 +14,101 @@
     <Page.Resources>
         <x:Double x:Key="ControlsWidth">200</x:Double>
         <x:Double x:Key="ControlsWidth2">410</x:Double>
+
+        <DataTemplate x:Key="FolderTemplate" x:DataType="ex:ProofTreeView">
+            <TreeViewItem AutomationProperties.Name="{Binding Content}" ItemsSource="{Binding Children}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Width="20" Source="../Assets/folder.png" />
+                    <TextBlock Margin="0,0,10,0" />
+                    <TextBlock Text="{Binding Content}" />
+                </StackPanel>
+            </TreeViewItem>
+        </DataTemplate>
+
+        <DataTemplate x:Key="FileTemplate" x:DataType="ex:ProofTreeView">
+            <TreeViewItem AutomationProperties.Name="{Binding Content}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Width="20" Source="../Assets/file.png" />
+                    <TextBlock Margin="0,0,10,0" />
+                    <TextBlock Text="{Binding Content}" />
+                </StackPanel>
+            </TreeViewItem>
+        </DataTemplate>
+
+        <DataTemplate x:Key="RootTemplate" x:DataType="ex:ProofTreeView">
+            <TreeViewItem AutomationProperties.Name="{Binding Content}" ItemsSource="{Binding Children}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Content}" />
+                </StackPanel>
+            </TreeViewItem>
+        </DataTemplate>
+
+        <vm:ProofTreeViewTemplateSelector
+            x:Key="ProofTreeViewTemplateSelector"
+            FileTemplate="{StaticResource FileTemplate}"
+            FolderTemplate="{StaticResource FolderTemplate}"
+            RootTemplate="{StaticResource RootTemplate}" />
+
+
     </Page.Resources>
 
-    <StackPanel Padding="50" Spacing="20">
-        <TextBlock
-            Margin="0,20"
-            Style="{StaticResource TitleTextBlockStyle}"
-            Text="Profil" />
-        <StackPanel Orientation="Horizontal" Spacing="10">
-            <ComboBox
-                Width="{StaticResource ControlsWidth2}"
-                ItemsSource="{Binding Profiles}"
-                PlaceholderText="Bitte Profil auswählen"
-                SelectedItem="{Binding Path=SelectedProfile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        </StackPanel>
-
-        <TextBlock
-            Margin="0,20"
-            Style="{StaticResource TitleTextBlockStyle}"
-            Text="Zeitraum" />
-        <StackPanel Orientation="Horizontal" Spacing="10">
-            <CalendarDatePicker
-                Width="{StaticResource ControlsWidth}"
-                Date="{Binding Path=StartDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Header="Startdatum" />
-            <CalendarDatePicker
-                Width="{StaticResource ControlsWidth}"
-                Date="{Binding Path=EndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Header="Enddatum" />
-        </StackPanel>
-
-        <TextBlock
-            Margin="0,20"
-            Style="{StaticResource TitleTextBlockStyle}"
-            Text="Speicherort" />
-        <StackPanel Orientation="Horizontal" Spacing="10">
-            <TextBox
-                Width="{StaticResource ControlsWidth2}"
-                Header="Dateipfad"
-                Text="{Binding Path=FilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <Button
-                VerticalAlignment="Bottom"
-                Click="FilePathButton_Click"
-                Content="Durchsuchen" />
-        </StackPanel>
-        <StackPanel
-            HorizontalAlignment="Left"
-            Orientation="Horizontal"
-            Spacing="20">
-            <Button
-                x:Name="GenerateButton"
+    <ScrollViewer>
+        <StackPanel Padding="50" Spacing="20">
+            <TextBlock
                 Margin="0,20"
-                Click="GenerateButton_Click"
-                Content="Berichte generieren"
-                Style="{StaticResource AccentButtonStyle}" />
-            <ProgressRing x:Name="ProgressRingMain" IsActive="False" />
+                Style="{StaticResource TitleTextBlockStyle}"
+                Text="Profil" />
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <ComboBox
+                    Width="{StaticResource ControlsWidth2}"
+                    ItemsSource="{Binding Profiles}"
+                    PlaceholderText="Bitte Profil auswählen"
+                    SelectedItem="{Binding Path=SelectedProfile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+            <TextBlock
+                Margin="0,20"
+                Style="{StaticResource TitleTextBlockStyle}"
+                Text="Zeitraum" />
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <CalendarDatePicker
+                    Width="{StaticResource ControlsWidth}"
+                    Date="{Binding Path=StartDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Header="Startdatum" />
+                <CalendarDatePicker
+                    Width="{StaticResource ControlsWidth}"
+                    Date="{Binding Path=EndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Header="Enddatum" />
+            </StackPanel>
+
+            <TextBlock
+                Margin="0,20"
+                Style="{StaticResource TitleTextBlockStyle}"
+                Text="Speicherort" />
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <TextBox
+                    Width="{StaticResource ControlsWidth2}"
+                    Header="Dateipfad"
+                    Text="{Binding Path=FilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <Button
+                    VerticalAlignment="Bottom"
+                    Click="FilePathButton_Click"
+                    Content="Durchsuchen" />
+            </StackPanel>
+            <StackPanel
+                HorizontalAlignment="Left"
+                Orientation="Horizontal"
+                Spacing="20">
+                <Button
+                    x:Name="GenerateButton"
+                    Margin="0,20"
+                    Click="GenerateButton_Click"
+                    Content="Berichte generieren"
+                    Style="{StaticResource AccentButtonStyle}" />
+                <ProgressRing x:Name="ProgressRingMain" IsActive="False" />
+            </StackPanel>
+            <TextBlock Text="{Binding HelpText}" />
+            <TreeView ItemTemplateSelector="{StaticResource ProofTreeViewTemplateSelector}" ItemsSource="{Binding ProofTreeViewMain}" />
         </StackPanel>
-    </StackPanel>
+    </ScrollViewer>
 </Page>

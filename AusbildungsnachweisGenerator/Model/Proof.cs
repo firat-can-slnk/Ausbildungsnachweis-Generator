@@ -53,7 +53,9 @@ namespace AusbildungsnachweisGenerator.Model
         public string Section { get; set; }
         public int? HourRate { get; set; }
 
-        public string FileName => $"Ausbildungsnachweis_{StartDate:d}";
+        public string FileName => $"{FileNameBase}{FileNameEnd(StartDate)}";
+        public static string FileNameBase = "Ausbildungsnachweis_";
+        public static string FileNameEnd(DateTime startDate) => startDate.ToString("d");
 
         public static Proof Sample
         {
