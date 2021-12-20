@@ -117,10 +117,12 @@
                         <CalendarDatePicker
                             Width="{StaticResource ControlsWidth}"
                             Date="{Binding Path=Apprenticeship.StartDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            FirstDayOfWeek="Monday"
                             Header="Ausbildungsbeginn" />
                         <CalendarDatePicker
                             Width="{StaticResource ControlsWidth}"
                             Date="{Binding Path=Apprenticeship.EndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            FirstDayOfWeek="Monday"
                             Header="Ausbildungsende" />
                     </StackPanel>
                     <NumberBox

@@ -93,13 +93,15 @@ namespace AusbildungsnachweisGenerator.ViewModel
 
         private string GetHelpText()
         {
-            var start = StartDate.DateTime.StartOfWeek();
-            var end = EndDate.DateTime.EndOfWeek();
+            var start = StartDate.DateTime;
+            var end = EndDate.DateTime;
 
-            int proofCount = start.GetWeeklyDateRangeTo(end).Count();
-            int weeksCount = proofCount;
-            int monthsCount = start.GetMonthlyDateRangeTo(end).Count();
-            int yearCount = start.GetYearlyDateRangeTo(end).Count();
+            var dates = new ProofDates(start, end, "");
+
+            int weeksCount = dates.Weeks.Count();
+            int monthsCount = dates.Months.Count();
+            int yearCount = dates.Years.Count();
+            int proofCount = weeksCount;
 
             var sb = new StringBuilder();
 
@@ -118,13 +120,22 @@ namespace AusbildungsnachweisGenerator.ViewModel
 
         private ObservableCollection<ProofTreeView> GetProofTreeView()
         {
-            var tv = ProofExtensions.GetTreeViewNode(StartDate.DateTime.StartOfWeek(), EndDate.DateTime.EndOfWeek());
+            var tv = ProofExtensions.GetTreeViewNode(StartDate.DateTime, EndDate.DateTime);
             return tv;
         }
 
         public void LoadProfiles()
         {
             Profiles = AppHelper.GetSettings().Profiles;
+        }
+
+        internal void UpdateDates()
+        {
+            OnPropertyChanged(nameof(StartDate));
+            OnPropertyChanged(nameof(EndDate));
+            OnPropertyChanged(nameof(IsFormValid));
+            OnPropertyChanged(nameof(HelpText));
+            OnPropertyChanged(nameof(ProofTreeViewMain));
         }
     }
     public class ProofTreeViewTemplateSelector : DataTemplateSelector

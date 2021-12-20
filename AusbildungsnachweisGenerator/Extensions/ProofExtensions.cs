@@ -13,6 +13,8 @@ namespace AusbildungsnachweisGenerator.Extensions
 {
     public static class ProofExtensions
     {
+
+
         public static string GenerateDocument(this Proof proof, string path, ProofType type)
         {
             var document = new Document();
@@ -33,31 +35,30 @@ namespace AusbildungsnachweisGenerator.Extensions
         {
             var root = new ProofTreeView("Ausbildungsnachweise", ProofTreeViewType.Root);
 
-            var weeks = start.GetWeeklyDateRangeTo(end);
-            var months = start.GetMonthlyDateRangeTo(end);
-            var years = start.GetYearlyDateRangeTo(end);
+            var dates = new ProofDates(start, end, "");
 
-            foreach (var year in years)
+            // loop each year
+            foreach (var year in dates.Years)
             {
-                var yearChild = new ProofTreeView(year.Year.ToString(), ProofTreeViewType.Folder);
-                foreach (var month in months)
+                var yearChild = new ProofTreeView(dates.YearDirectory(year), ProofTreeViewType.Folder);
+
+                // loop each month of that year year
+                foreach (var month in dates.MonthsInYear(year))
                 {
-                    if (month.Year != year.Year)
-                        continue;
+                    var monthChild = new ProofTreeView(dates.MonthDirectory(month), ProofTreeViewType.Folder);
 
-                    var monthChild = new ProofTreeView($"{month.Month} {month.ToString("MMMM")}", ProofTreeViewType.Folder);
-
-                    foreach (var week in weeks)
+                    // loop each week of the month in the year
+                    foreach (var week in dates.WeeksInMonth(month))
                     {
-                        if (week.Month != month.Month || week.Year != month.Year)
-                            continue;
-
+                        // Add week node
                         monthChild.Children.Add(new ProofTreeView($"{Proof.FileNameBase}{Proof.FileNameEnd(week)}.docx", ProofTreeViewType.File));
                     }
 
+                    // Add month node
                     yearChild.Children.Add(monthChild);
                 }
 
+                // Add year node
                 root.Children.Add(yearChild);
             }
 

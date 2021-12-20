@@ -94,48 +94,42 @@ namespace AusbildungsnachweisGenerator.Views
                 StartPageViewModel dataContext = vm;
 
                 var generated = 0;
-                var max = 0;
 
                 var profile = dataContext.SelectedProfile;
                 var noteNr = 0;
 
-                var startDate = dataContext.StartDate.DateTime.StartOfWeek();
-                var endDate = dataContext.EndDate.DateTime.EndOfWeek();
+                var startDate = dataContext.StartDate.DateTime;
+                var endDate = dataContext.EndDate.DateTime;
 
-                var years = startDate.GetYearlyDateRangeTo(endDate);
-                foreach (var year in years)
+                var dates = new ProofDates(startDate, endDate, dataContext.FilePath);
+
+                var max = dates.Weeks.Count();
+
+                foreach (var year in dates.Years)
                 {
-                    var yearPath = @$"{dataContext.FilePath}\{year.Year}";
+                    var yearPath = @$"{dates.RootPath}\{dates.YearDirectory(year)}";
                     Directory.CreateDirectory(yearPath);
 
                     noteNr++;
 
-                    var months = startDate.GetMonthlyDateRangeTo(endDate);
-                    foreach (var month in months)
+                    foreach (var month in dates.MonthsInYear(year))
                     {
                         if (month.Year == year.Year)
                         {
-                            var monthPath = @$"{yearPath}\{month.Month} {month.ToString("MMMM")}";
+                            var monthPath = @$"{yearPath}\{dates.MonthDirectory(month)}";
                             Directory.CreateDirectory(monthPath);
 
-                            var weeks = startDate.GetWeeklyDateRangeTo(endDate);
 
-                            if (max == 0)
-                                max = weeks.Count();
-
-                            foreach (var week in weeks)
+                            foreach (var week in dates.WeeksInMonth(month))
                             {
-                                if (week.Month == month.Month && week.Year == month.Year)
-                                {
-                                    var proof = profile.GetProof(noteNr, week.StartOfWeek(), week.EndOfWeek());
-                                    _ = proof.GenerateDocument(monthPath, ProofType.Daily);
-                                    generated++;
+                                var proof = profile.GetProof(noteNr, week.StartOfWeek(), week.EndOfWeek());
+                                _ = proof.GenerateDocument(monthPath, ProofType.Daily);
+                                generated++;
 
-                                    DispatcherQueue.TryEnqueue(() =>
-                                    {
-                                        Progress = ((double)generated / (double)max) * 100;
-                                    });
-                                }
+                                DispatcherQueue.TryEnqueue(() =>
+                                {
+                                    Progress = ((double)generated / (double)max) * 100;
+                                });
                             }
 
                         }
@@ -185,6 +179,12 @@ namespace AusbildungsnachweisGenerator.Views
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             ((StartPageViewModel)DataContext).LoadProfiles();
+        }
+
+        private void CalendarDatePicker_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
+        {
+            if(DataContext is StartPageViewModel dc)
+                dc.UpdateDates();
         }
     }
 }

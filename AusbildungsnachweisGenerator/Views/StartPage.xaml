@@ -74,11 +74,17 @@
                 <CalendarDatePicker
                     Width="{StaticResource ControlsWidth}"
                     Date="{Binding Path=StartDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Header="Startdatum" />
+                    DateChanged="CalendarDatePicker_DateChanged"
+                    FirstDayOfWeek="Monday"
+                    Header="Startdatum"
+                    MaxDate="{Binding Path=EndDate}" />
                 <CalendarDatePicker
                     Width="{StaticResource ControlsWidth}"
                     Date="{Binding Path=EndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Header="Enddatum" />
+                    DateChanged="CalendarDatePicker_DateChanged"
+                    FirstDayOfWeek="Monday"
+                    Header="Enddatum"
+                    MinDate="{Binding Path=StartDate}" />
             </StackPanel>
 
             <TextBlock
