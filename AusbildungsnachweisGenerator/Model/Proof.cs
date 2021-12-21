@@ -53,6 +53,28 @@ namespace AusbildungsnachweisGenerator.Model
         public static string FileNameBase = "Ausbildungsnachweis_";
         public static string FileNameEnd(DateTime startDate) => startDate.ToString("d");
 
+        public static ProofType GetProofTypeFromOptions(bool isDaily, bool isWeekly, bool hasPlan)
+        {
+            if (isDaily && isWeekly)
+                throw new Exception("Proof Type cant be daily and weekly at the same time");
+
+            if (isDaily)
+            {
+                if (hasPlan)
+                    return ProofType.DailyWithPlan;
+                else
+                    return ProofType.Daily;
+            }
+            else if (isWeekly)
+            {
+                if (hasPlan)
+                    return ProofType.WeeklyWithPlan;
+                else
+                    return ProofType.Weekly;
+            }
+
+            throw new Exception($"Proof Type was not selected or invalid ({isDaily}, {isWeekly}, {hasPlan})");
+        }
         public static Proof Sample
         {
             get

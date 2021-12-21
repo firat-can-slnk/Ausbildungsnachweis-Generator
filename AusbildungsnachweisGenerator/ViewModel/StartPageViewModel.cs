@@ -124,6 +124,15 @@ namespace AusbildungsnachweisGenerator.ViewModel
             return tv;
         }
 
+        public bool TypeIsDaily { get; set; } = true;
+        public bool TypeIsWeekly { get; set; } = false;
+        public bool TypeIsPlan { get; set; } = false;
+
+        public ProofType SelectedProofType()
+        {
+            return Proof.GetProofTypeFromOptions(TypeIsDaily, TypeIsWeekly, TypeIsPlan);
+        }
+
         public void LoadProfiles()
         {
             Profiles = AppHelper.GetSettings().Profiles;

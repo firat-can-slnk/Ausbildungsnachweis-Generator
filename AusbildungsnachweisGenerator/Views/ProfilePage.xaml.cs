@@ -47,11 +47,23 @@ namespace AusbildungsnachweisGenerator.Views
             }
         }
 
+        private void DuplicateButton_Click(object sender, RoutedEventArgs e)
+        {
+            var dataContext = (ProfilePageViewModel)DataContext;
+            if(!dataContext.SelectedProfile.IsForCreation)
+            {
+                var newProfile = dataContext.SelectedProfile;
+                newProfile.Timestamp = DateTime.Now;
+                AppHelper.AddProfile(newProfile);
+                dataContext.LoadProfiles();
+            }
+
+        }
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             var dataContext = (ProfilePageViewModel)DataContext;
 
-            var newProfile = new Profile(dataContext.Job, dataContext.Instructor, dataContext.Company, dataContext.Apprenticeship, dataContext.Apprentice, dataContext.Address, DateTime.Now);
+            var newProfile = new Profile(dataContext.Job, dataContext.Instructor, dataContext.Company, dataContext.Apprenticeship, dataContext.Apprentice, dataContext.Address, dataContext.GetProofType(), DateTime.Now);
 
             if(dataContext.SelectedProfile == null || dataContext.SelectedProfile.Timestamp == Profile.DefaultTimestamp)
                 AppHelper.AddProfile(newProfile);
@@ -85,6 +97,11 @@ namespace AusbildungsnachweisGenerator.Views
                 AppHelper.DeleteProfile(p);
                 dataContext.LoadProfiles();
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

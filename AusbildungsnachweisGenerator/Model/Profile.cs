@@ -16,20 +16,22 @@ namespace AusbildungsnachweisGenerator.Model
         public Apprenticeship Apprenticeship;
         public Apprentice Apprentice;
         public Address Address;
+        public ProofType PreferredProofType;
         public DateTime Timestamp;
+
+
+        public static Profile New => new(DefaultTimestamp) { Apprenticeship = new(DateTime.Now.Date, DateTime.Now.Date.AddYears(3)) };
+
+        public bool ValuesEmpty => (Job == null && Instructor == null && Company == null && Address == null && Apprentice == null) && (Apprenticeship?.Equals(New.Apprenticeship) ?? true);
+        public bool IsForCreation => ValuesEmpty && Timestamp.Equals(DefaultTimestamp);
+        public bool IsNotForCreation => !IsForCreation;
 
         public Profile() { }
         public Profile(DateTime timestamp)
         {
             Timestamp = timestamp;
         }
-
-        public static Profile New => new(DefaultTimestamp) { Apprenticeship = new(DateTime.Now.Date, DateTime.Now.Date.AddYears(3)) };
-
-        public bool ValuesEmpty => (Job == null && Instructor == null && Company == null && Address == null && Apprentice == null) && (Apprenticeship?.Equals(New.Apprenticeship) ?? true);
-        public bool IsForCreation => ValuesEmpty && Timestamp.Equals(DefaultTimestamp);
-
-        public Profile(Job job, Instructor instructor, Company company, Apprenticeship apprenticeship, Apprentice apprentice, Address address, DateTime timestamp)
+        public Profile(Job job, Instructor instructor, Company company, Apprenticeship apprenticeship, Apprentice apprentice, Address address, ProofType preferredProofType, DateTime timestamp)
         {
             Job = job;
             Instructor = instructor;
@@ -37,6 +39,7 @@ namespace AusbildungsnachweisGenerator.Model
             Apprenticeship = apprenticeship;
             Apprentice = apprentice;
             Address = address;
+            PreferredProofType = preferredProofType;
             Timestamp = timestamp;
         }
 
@@ -52,7 +55,7 @@ namespace AusbildungsnachweisGenerator.Model
             }
             else
             {
-                return $"Azubi {(string.IsNullOrWhiteSpace(Apprentice?.FullName) ? "(leer)" : Apprentice?.FullName)} bei Firma {Company?.Name ?? "(leer)"}, erstellt am {Timestamp:g}";
+                return $"{(string.IsNullOrWhiteSpace(Apprentice?.FullName) ? "(leer)" : Apprentice?.FullName)} bei {Company?.Name ?? "(leer)"}, erstellt am {Timestamp:g}";
             }
         }
 

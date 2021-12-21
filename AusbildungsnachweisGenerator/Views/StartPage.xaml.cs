@@ -22,6 +22,7 @@ using AusbildungsnachweisGenerator;
 using AusbildungsnachweisGenerator.Helper;
 using System.Threading.Tasks;
 using Windows.UI.Popups;
+using Microsoft.Toolkit.Mvvm.Input;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -105,6 +106,8 @@ namespace AusbildungsnachweisGenerator.Views
 
                 var max = dates.Weeks.Count();
 
+                var type = dataContext.SelectedProofType();
+
                 foreach (var year in dates.Years)
                 {
                     var yearPath = @$"{dates.RootPath}\{dates.YearDirectory(year)}";
@@ -123,7 +126,7 @@ namespace AusbildungsnachweisGenerator.Views
                             foreach (var week in dates.WeeksInMonth(month))
                             {
                                 var proof = profile.GetProof(noteNr, week.StartOfWeek(), week.EndOfWeek());
-                                _ = proof.GenerateDocument(monthPath, ProofType.Daily);
+                                _ = proof.GenerateDocument(monthPath, type);
                                 generated++;
 
                                 DispatcherQueue.TryEnqueue(() =>
@@ -135,6 +138,21 @@ namespace AusbildungsnachweisGenerator.Views
                         }
                     }
                 }
+
+                DispatcherQueue.TryEnqueue(async () =>
+                {
+                    var dialog = new ContentDialog()
+                    {
+                        Content = "Die Berichte wurden erfolgreich erstellt.",
+                        Title = "Erfolgreich erstellt",
+                        CloseButtonText = "Schließen",
+                        PrimaryButtonText = "Speicherort öffnen"
+                    };
+                    dialog.XamlRoot = this.Content.XamlRoot;
+                    var result = await dialog.ShowAsync();
+                    if (result == ContentDialogResult.Primary)
+                        IOHelper.OpenWithDefaultProgram(dates.RootPath);
+                });
             }
             catch (Exception e)
             {
@@ -171,7 +189,9 @@ namespace AusbildungsnachweisGenerator.Views
             var path = @$"{Path.GetTempPath()}";
             path = path.Remove(path.Count() - 1);
 
-            var filePath = proof.GenerateDocument(@$"{path}", ProofType.Daily);
+            var type = dataContext.SelectedProofType();
+
+            var filePath = proof.GenerateDocument(@$"{path}", type);
 
             if (File.Exists(filePath))
                 IOHelper.OpenWithDefaultProgram(filePath);
@@ -185,6 +205,40 @@ namespace AusbildungsnachweisGenerator.Views
         {
             if(DataContext is StartPageViewModel dc)
                 dc.UpdateDates();
+        }
+
+        private void HelpButton_Click(object sender, RoutedEventArgs args)
+        {
+            HelpTeachingTipProfileHeader.IsOpen = true;
+        }
+        private void ShowNextTeachingTip(TeachingTip sender, object args)
+        {
+            sender.IsOpen = false;
+
+            if (sender == HelpTeachingTipProfileHeader)
+            {
+                HelpTeachingTipTimeFrameHeader.IsOpen = true;
+            }
+            else if(sender == HelpTeachingTipTimeFrameHeader)
+            {
+                HelpTeachingTipTypeHeader.IsOpen = true;
+            }
+            else if(sender == HelpTeachingTipTypeHeader)
+            {
+                HelpTeachingTipSaveDirectoryHeader.IsOpen = true;
+            }
+            else if(sender == HelpTeachingTipSaveDirectoryHeader)
+            {
+                HelpTeachingTipGenerateButton.IsOpen = true;
+            }
+            else if(sender == HelpTeachingTipGenerateButton)
+            {
+                HelpTeachingTipSampleButton.IsOpen = true;
+            }
+            else if(sender == HelpTeachingTipSampleButton)
+            {
+                HelpTeachingTipProofTreeViewSection.IsOpen = true;
+            }
         }
     }
 }

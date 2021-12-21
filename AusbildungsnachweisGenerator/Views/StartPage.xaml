@@ -36,7 +36,10 @@
         </DataTemplate>
 
         <DataTemplate x:Key="RootTemplate" x:DataType="ex:ProofTreeView">
-            <TreeViewItem AutomationProperties.Name="{Binding Content}" ItemsSource="{Binding Children}">
+            <TreeViewItem
+                AutomationProperties.Name="{Binding Content}"
+                IsExpanded="True"
+                ItemsSource="{Binding Children}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="{Binding Content}" />
                 </StackPanel>
@@ -55,6 +58,7 @@
     <ScrollViewer>
         <StackPanel Padding="50" Spacing="20">
             <TextBlock
+                x:Name="ProfileHeader"
                 Margin="0,20"
                 Style="{StaticResource TitleTextBlockStyle}"
                 Text="Profil" />
@@ -63,10 +67,12 @@
                     Width="{StaticResource ControlsWidth2}"
                     ItemsSource="{Binding Profiles}"
                     PlaceholderText="Bitte Profil auswählen"
-                    SelectedItem="{Binding Path=SelectedProfile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    SelectedItem="{Binding Path=SelectedProfile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    ToolTipService.ToolTip="Das Profil mit dessen Daten die Berichte erstellt werden sollen" />
             </StackPanel>
 
             <TextBlock
+                x:Name="TimeFrameHeader"
                 Margin="0,20"
                 Style="{StaticResource TitleTextBlockStyle}"
                 Text="Zeitraum" />
@@ -77,17 +83,42 @@
                     DateChanged="CalendarDatePicker_DateChanged"
                     FirstDayOfWeek="Monday"
                     Header="Startdatum"
-                    MaxDate="{Binding Path=EndDate}" />
+                    MaxDate="{Binding Path=EndDate}"
+                    ToolTipService.ToolTip="Das Datum für die erste Woche für die ein Arbeitszeitnachweis erstellt werden soll" />
                 <CalendarDatePicker
                     Width="{StaticResource ControlsWidth}"
                     Date="{Binding Path=EndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     DateChanged="CalendarDatePicker_DateChanged"
                     FirstDayOfWeek="Monday"
                     Header="Enddatum"
-                    MinDate="{Binding Path=StartDate}" />
+                    MinDate="{Binding Path=StartDate}"
+                    ToolTipService.ToolTip="Das Datum für die letzte Woche für die ein Arbeitszeitnachweis erstellt werden soll" />
             </StackPanel>
 
             <TextBlock
+                x:Name="TypeHeader"
+                Margin="0,20"
+                Style="{StaticResource TitleTextBlockStyle}"
+                Text="Typ" />
+            <RadioButtons MaxColumns="2">
+                <RadioButtons.Items>
+                    <RadioButton
+                        Content="Täglich (A)"
+                        IsChecked="{Binding Path=TypeIsDaily, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        ToolTipService.ToolTip="Der Bericht wird nach der Vorlage eines täglichen Arbeitszeitnachweis erstellt&#x0a;Siehe Anlage 2 a und 3 a der Ausbildungsnachweisvorlagen." />
+                    <RadioButton
+                        Content="Wöchentlich (B)"
+                        IsChecked="{Binding Path=TypeIsWeekly, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        ToolTipService.ToolTip="Der Bericht wird nach der Vorlage eines wöchentlichen Arbeitszeitnachweis erstellt&#x0a;Siehe Anlage 2 b und 3 b der Ausbildungsnachweisvorlagen." />
+                </RadioButtons.Items>
+            </RadioButtons>
+            <CheckBox
+                Content="Mit Bezug zum Ausblidungsrahmenplan (3)"
+                IsChecked="{Binding Path=TypeIsPlan, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                ToolTipService.ToolTip="Der Bericht wird mit einer zusätlichen Spalte für den Bezug zum Ausbildungsrahmenplan erstellt.&#x0a;Siehe Anlage 3 a und 3 b der Ausbildungsnachweisvorlagen." />
+
+            <TextBlock
+                x:Name="SaveDirectoryHeader"
                 Margin="0,20"
                 Style="{StaticResource TitleTextBlockStyle}"
                 Text="Speicherort" />
@@ -110,15 +141,87 @@
                     Margin="0,20"
                     Click="GenerateButton_Click"
                     Content="Berichte generieren"
-                    Style="{StaticResource AccentButtonStyle}" />
+                    Style="{StaticResource AccentButtonStyle}"
+                    ToolTipService.ToolTip="Generiert alle Berichte mit den angegebenen Daten im angegebenen Verzeichnis." />
                 <Button
+                    x:Name="SampleButton"
                     Margin="0,20"
                     Click="SampleButton_Click"
-                    Content="Beispiel anzeigen" />
+                    Content="Beispiel anzeigen"
+                    ToolTipService.ToolTip="Öffnet einen Ausbildungsnachweis nach den angegeben Daten oder - wenn keine angegben sind - nach Beispieldaten" />
+                <Button
+                    x:Name="HelpButton"
+                    Margin="0,20"
+                    Click="HelpButton_Click"
+                    Content="Einführung beginnen"
+                    ToolTipService.ToolTip="Die Einführung zeigt dir was die einzelnen Schaltflächen und Optionen bedeuten" />
                 <ProgressRing x:Name="ProgressRingMain" IsActive="False" />
             </StackPanel>
-            <TextBlock Text="{Binding HelpText}" />
-            <TreeView ItemTemplateSelector="{StaticResource ProofTreeViewTemplateSelector}" ItemsSource="{Binding ProofTreeViewMain}" />
+            <TextBlock x:Name="HelpTextSection" Text="{Binding HelpText}" />
+            <TreeView
+                x:Name="ProofTreeViewSection"
+                MinWidth="420"
+                HorizontalAlignment="Left"
+                ItemTemplateSelector="{StaticResource ProofTreeViewTemplateSelector}"
+                ItemsSource="{Binding ProofTreeViewMain}" />
+            <!--#region TeachingTips-->
+            <TeachingTip
+                x:Name="HelpTeachingTipProfileHeader"
+                Title="Profil"
+                ActionButtonClick="ShowNextTeachingTip"
+                ActionButtonContent="Weiter"
+                CloseButtonContent="Abbrechen"
+                Subtitle="Hier wird das Profil ausgewählt, aus dem die Daten für den Ausbildungsnachweis stammen werden."
+                Target="{x:Bind ProfileHeader}" />
+            <TeachingTip
+                x:Name="HelpTeachingTipTimeFrameHeader"
+                Title="Zeitraum"
+                ActionButtonClick="ShowNextTeachingTip"
+                ActionButtonContent="Weiter"
+                CloseButtonContent="Abbrechen"
+                Subtitle="Hier wird der Zeitraum für erstellung die Ausbildungsnachweise angegeben."
+                Target="{x:Bind TimeFrameHeader}" />
+            <TeachingTip
+                x:Name="HelpTeachingTipTypeHeader"
+                Title="Typ des Ausbildungsnachweises"
+                ActionButtonClick="ShowNextTeachingTip"
+                ActionButtonContent="Weiter"
+                CloseButtonContent="Abbrechen"
+                Subtitle="Es gibt mehrere Typen von Ausbildungsnachweise, den von dir gewünschten kannst du hier angeben."
+                Target="{x:Bind TypeHeader}" />
+            <TeachingTip
+                x:Name="HelpTeachingTipSaveDirectoryHeader"
+                Title="Speicherort der Ausblidungsnachweise"
+                ActionButtonClick="ShowNextTeachingTip"
+                ActionButtonContent="Weiter"
+                CloseButtonContent="Abbrechen"
+                Subtitle="Hier wird angegeben in welchem Ordner die Ausblidungsnachweise gespeichert werden sollen."
+                Target="{x:Bind SaveDirectoryHeader}" />
+            <TeachingTip
+                x:Name="HelpTeachingTipGenerateButton"
+                Title="Berichte generieren"
+                ActionButtonClick="ShowNextTeachingTip"
+                ActionButtonContent="Weiter"
+                CloseButtonContent="Abbrechen"
+                Subtitle="Nachdem alles angegeben wurde, werden mit einem Klick auf diesen Button die Berichte erstellt."
+                Target="{x:Bind GenerateButton}" />
+            <TeachingTip
+                x:Name="HelpTeachingTipSampleButton"
+                Title="Beispiel anzeigen"
+                ActionButtonClick="ShowNextTeachingTip"
+                ActionButtonContent="Weiter"
+                CloseButtonContent="Abbrechen"
+                Subtitle="Hier kannst du hier einen Beispielhaften Nachweis anzeigen lassen, der die Daten enthält die du angegeben hast."
+                Target="{x:Bind SampleButton}" />
+            <TeachingTip
+                x:Name="HelpTeachingTipProofTreeViewSection"
+                Title="Finale Struktur der Berichte"
+                CloseButtonContent="Abbrechen"
+                PreferredPlacement="TopLeft"
+                Subtitle="Hier wird die Finale Struktur der erstellten Ordner und Berichte angezeigt"
+                Target="{x:Bind ProofTreeViewSection}" />
+            <!--#endregion-->
         </StackPanel>
+
     </ScrollViewer>
 </Page>

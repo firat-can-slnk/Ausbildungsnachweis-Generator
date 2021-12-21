@@ -18,7 +18,9 @@ namespace AusbildungsnachweisGenerator.ViewModel
         private Address address;
         private Profile selectedProfile;
         private List<Profile> profiles;
-        private int selectedProfileIndex;
+        private bool typeIsDaily = true;
+        private bool typeIsWeekly = false;
+        private bool typeIsPlan = false;
 
         public static Proof Sample { get; } = Proof.Sample;
 
@@ -81,11 +83,18 @@ namespace AusbildungsnachweisGenerator.ViewModel
                 OnPropertyChanged(nameof(CanBeDeleted));
             }
         }
-        public bool IsFormValid =>  SelectedProfile != null &&
+        public bool IsFormValid => SelectedProfile != null &&
                                     !string.IsNullOrWhiteSpace(Apprentice?.Firstname) &&
                                     !string.IsNullOrWhiteSpace(Apprentice?.Name) &&
                                     !string.IsNullOrWhiteSpace(Company?.Name);
-        public bool CanBeDeleted =>  SelectedProfile != null && !SelectedProfile.IsForCreation;
+        public bool CanBeDeleted => SelectedProfile != null && !SelectedProfile.IsForCreation;
+        public bool TypeIsDaily { get => typeIsDaily; set => SetProperty(ref typeIsDaily, value); }
+        public bool TypeIsWeekly { get => typeIsWeekly; set => SetProperty(ref typeIsWeekly, value); }
+        public bool TypeIsPlan { get => typeIsPlan; set => SetProperty(ref typeIsPlan, value); }
+        public ProofType GetProofType()
+        {
+            return Proof.GetProofTypeFromOptions(TypeIsDaily, TypeIsWeekly, TypeIsPlan);
+        }
         public ProfilePageViewModel()
         {
         }
@@ -103,6 +112,28 @@ namespace AusbildungsnachweisGenerator.ViewModel
             Apprenticeship = profile?.Apprenticeship ?? new();
             Apprentice = profile?.Apprentice ?? new();
             Address = profile?.Address ?? new();
+
+            TypeIsDaily = true;
+            TypeIsWeekly = false;
+            TypeIsPlan = false;
+
+            switch (profile?.PreferredProofType ?? ProofType.Daily)
+            {
+                case ProofType.Weekly:
+                    TypeIsDaily = false;
+                    TypeIsWeekly = true;
+                    break;
+                case ProofType.DailyWithPlan:
+                    TypeIsPlan = true;
+                    break;
+                case ProofType.WeeklyWithPlan:
+                    TypeIsDaily = false;
+                    TypeIsWeekly = true;
+                    TypeIsPlan = true;
+                    break;
+                default:
+                    break;
+            }
         }
         public void LoadProfiles()
         {

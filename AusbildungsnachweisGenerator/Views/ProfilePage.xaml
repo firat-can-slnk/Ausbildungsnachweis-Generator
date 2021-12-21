@@ -2,7 +2,6 @@
     x:Class="AusbildungsnachweisGenerator.Views.ProfilePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="using:AusbildungsnachweisGenerator.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:AusbildungsnachweisGenerator"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -32,11 +31,20 @@
                     Margin="0,20"
                     Style="{StaticResource TitleTextBlockStyle}"
                     Text="Profil" />
-                <StackPanel Orientation="Horizontal" Spacing="10">
+                <StackPanel
+                    MaxWidth="{StaticResource ControlsWidth2}"
+                    HorizontalAlignment="Left"
+                    Orientation="Horizontal"
+                    Spacing="10">
                     <ComboBox
-                        Width="{StaticResource ControlsWidth2}"
+                        Width="300"
                         ItemsSource="{Binding Profiles}"
                         SelectedItem="{Binding Path=SelectedProfile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <Button
+                        Width="100"
+                        Click="DuplicateButton_Click"
+                        Content="Duplizieren"
+                        IsEnabled="{Binding Path=CanBeDeleted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
             </StackPanel>
 
@@ -44,11 +52,12 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <StackPanel Margin="0,0,50,0" Spacing="20">
+                <StackPanel Margin="0,20,50,20" Spacing="20">
                     <TextBlock
-                        Margin="0,20"
+                        Margin="0,10"
                         Style="{StaticResource TitleTextBlockStyle}"
                         Text="Auszubildender" />
                     <StackPanel Orientation="Horizontal" Spacing="10">
@@ -106,11 +115,11 @@
                 </StackPanel>
 
                 <StackPanel
-                    Grid.Row="2"
-                    Margin="0,50"
+                    Grid.Row="1"
+                    Margin="0,20"
                     Spacing="20">
                     <TextBlock
-                        Margin="0,20"
+                        Margin="0,10"
                         Style="{StaticResource TitleTextBlockStyle}"
                         Text="Ausbildung" />
                     <StackPanel Orientation="Horizontal" Spacing="10">
@@ -125,17 +134,48 @@
                             FirstDayOfWeek="Monday"
                             Header="Ausbildungsende" />
                     </StackPanel>
-                    <NumberBox
-                        Width="{StaticResource ControlsWidth}"
-                        HorizontalAlignment="Left"
-                        Header="Stundensatz"
-                        Maximum="10"
-                        Minimum="1"
-                        SpinButtonPlacementMode="Inline"
-                        Value="{Binding Path=Apprenticeship.HourRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <CheckBox Content="Arbeit am Samstag" IsChecked="{Binding Path=Apprenticeship.WithSaturday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <NumberBox
+                            Width="{StaticResource ControlsWidth}"
+                            HorizontalAlignment="Left"
+                            Header="Stundensatz"
+                            Maximum="10"
+                            Minimum="1"
+                            SpinButtonPlacementMode="Inline"
+                            Value="{Binding Path=Apprenticeship.HourRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <CheckBox
+                            VerticalAlignment="Bottom"
+                            Content="Arbeit am Samstag"
+                            IsChecked="{Binding Path=Apprenticeship.WithSaturday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
                 </StackPanel>
 
+                <StackPanel
+                    Grid.Row="2"
+                    Margin="0,20"
+                    Spacing="20">
+                    <TextBlock
+                        x:Name="TypeHeader"
+                        Margin="0,10"
+                        Style="{StaticResource TitleTextBlockStyle}"
+                        Text="Typ" />
+                    <RadioButtons MaxColumns="2">
+                        <RadioButtons.Items>
+                            <RadioButton
+                                Content="Täglich (A)"
+                                IsChecked="{Binding Path=TypeIsDaily, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                ToolTipService.ToolTip="Der Bericht wird nach der Vorlage eines täglichen Arbeitszeitnachweis erstellt&#x0a;Siehe Anlage 2 a und 3 a der Ausbildungsnachweisvorlagen." />
+                            <RadioButton
+                                Content="Wöchentlich (B)"
+                                IsChecked="{Binding Path=TypeIsWeekly, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                ToolTipService.ToolTip="Der Bericht wird nach der Vorlage eines wöchentlichen Arbeitszeitnachweis erstellt&#x0a;Siehe Anlage 2 b und 3 b der Ausbildungsnachweisvorlagen." />
+                        </RadioButtons.Items>
+                    </RadioButtons>
+                    <CheckBox
+                        Content="Mit Bezug zum Ausblidungsrahmenplan (3)"
+                        IsChecked="{Binding Path=TypeIsPlan, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        ToolTipService.ToolTip="Der Bericht wird mit einer zusätlichen Spalte für den Bezug zum Ausbildungsrahmenplan erstellt.&#x0a;Siehe Anlage 3 a und 3 b der Ausbildungsnachweisvorlagen." />
+                </StackPanel>
             </Grid>
 
             <Grid x:Name="GridRight" Grid.Column="1">
@@ -145,9 +185,9 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <StackPanel Spacing="20">
+                <StackPanel Margin="0,20" Spacing="20">
                     <TextBlock
-                        Margin="0,20"
+                        Margin="0,10"
                         Style="{StaticResource TitleTextBlockStyle}"
                         Text="Ausbildungsbetrieb" />
                     <TextBox
@@ -161,10 +201,10 @@
 
                 <StackPanel
                     Grid.Row="1"
-                    Margin="0,50"
+                    Margin="0,20"
                     Spacing="20">
                     <TextBlock
-                        Margin="0,20"
+                        Margin="0,10"
                         Style="{StaticResource TitleTextBlockStyle}"
                         Text="Ausbilder" />
                     <StackPanel Orientation="Horizontal" Spacing="10">
@@ -181,9 +221,12 @@
                     </StackPanel>
                 </StackPanel>
 
-                <StackPanel Grid.Row="2" Spacing="20">
+                <StackPanel
+                    Grid.Row="2"
+                    Margin="0,20"
+                    Spacing="20">
                     <TextBlock
-                        Margin="0,20"
+                        Margin="0,10"
                         Style="{StaticResource TitleTextBlockStyle}"
                         Text="Ausbildungsberuf" />
                     <TextBox
@@ -208,7 +251,7 @@
 
             </Grid>
             <StackPanel
-                Grid.Row="2"
+                Grid.Row="3"
                 Orientation="Horizontal"
                 Spacing="20">
 
