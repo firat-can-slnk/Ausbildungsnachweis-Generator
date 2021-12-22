@@ -1,4 +1,5 @@
 ﻿using AusbildungsnachweisGenerator.ViewModel;
+using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -10,6 +11,7 @@ using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -37,6 +39,14 @@ namespace AusbildungsnachweisGenerator.Views
             // Workaround because the app goes to an infinite loop (PanelItem.Title.Get() gets called infinitely)
             // if the layout is UniformGridLayout on start
             //PanelItemsRepeater.Layout = this.Resources["MyUniformGridLayout"] as UniformGridLayout; // Not working good either
+        }
+
+        private void DataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            if (e.PropertyName == "Meaning")
+            {
+                e.Column.Header = "Bedeutung";
+            }
         }
     }
 }

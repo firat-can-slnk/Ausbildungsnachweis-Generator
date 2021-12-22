@@ -56,11 +56,60 @@
     </Page.Resources>
 
     <ScrollViewer>
-        <ItemsRepeater
-            x:Name="PanelItemsRepeater"
-            ItemTemplate="{StaticResource PanelTemplate}"
-            ItemsSource="{Binding PanelItems}"
-            Layout="{StaticResource VerticalStackLayout}" />
+        <StackPanel>
+            <TextBlock
+                Margin="20"
+                Style="{StaticResource TitleTextBlockStyle}"
+                Text="Benutzerdefinierte Vorlagen" />
+            <InfoBar
+                Title="Vorlagen anpassen"
+                MaxWidth="750"
+                Margin="10,0,10,10"
+                HorizontalAlignment="Left"
+                IsClosable="False"
+                IsOpen="True"
+                Message="{Binding InfoMessage}"
+                Severity="Informational">
+                <InfoBar.ActionButton>
+                    <Button Command="{Binding OpenPathCommand}" Content="Pfad öffnen" />
+                </InfoBar.ActionButton>
+            </InfoBar>
+
+            <TextBlock
+                Margin="20"
+                Style="{StaticResource TitleTextBlockStyle}"
+                Text="Variablen" />
+
+            <InfoBar
+                Title="Variablen im .docx-Dokument"
+                MaxWidth="750"
+                Margin="10,0,10,10"
+                HorizontalAlignment="Left"
+                IsClosable="False"
+                IsOpen="True"
+                Message="Die Variablen müssen in die dafür vorgesehenen stellen im .docx-Dokument eingefügt werden und werden beim generieren neuer Nachweise durch die tatsächtlichen Daten ersetzt."
+                Severity="Informational" />
+
+            <controls:DataGrid
+                MaxWidth="750"
+                Margin="10"
+                HorizontalAlignment="Left"
+                AutoGenerateColumns="True"
+                AutoGeneratingColumn="DataGrid_AutoGeneratingColumn"
+                IsReadOnly="True"
+                ItemsSource="{Binding FormatItems}" />
+
+            <TextBlock
+                Margin="20"
+                Style="{StaticResource TitleTextBlockStyle}"
+                Text="Vorschau der Standardvorlagen" />
+
+            <ItemsRepeater
+                x:Name="PanelItemsRepeater"
+                ItemTemplate="{StaticResource PanelTemplate}"
+                ItemsSource="{Binding PanelItems}"
+                Layout="{StaticResource VerticalStackLayout}" />
+        </StackPanel>
     </ScrollViewer>
 
 
