@@ -162,6 +162,9 @@
                 x:Name="ProofTreeViewSection"
                 MinWidth="420"
                 HorizontalAlignment="Left"
+                CanDrag="False"
+                CanDragItems="False"
+                CanReorderItems="False"
                 ItemTemplateSelector="{StaticResource ProofTreeViewTemplateSelector}"
                 ItemsSource="{Binding ProofTreeViewMain}" />
             <!--#region TeachingTips-->
