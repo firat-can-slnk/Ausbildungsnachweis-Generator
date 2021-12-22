@@ -14,7 +14,7 @@
 
 ## Download
 
-Eine .zip/.7z Datei aus den [Releases](releases) herunterladen, entpacken und die `AusbildungsnachweisGenerator.exe` ausführen
+Eine .zip/.7z Datei aus den [Releases](../../releases) herunterladen, entpacken und die `AusbildungsnachweisGenerator.exe` ausführen
 
 - Es wird Windows 10 ab Build 19041 benötigt, entwickelt wurde das Programm für Windows 11
 - Für die Frameworkabhängige Version wird, wenn nicht bereits vorhanden, [.NET 6.0](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) benötigt
