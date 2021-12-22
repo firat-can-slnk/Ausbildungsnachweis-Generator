@@ -32,7 +32,7 @@ namespace AusbildungsnachweisGenerator
         /// </summary>
         public App()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         /// <summary>

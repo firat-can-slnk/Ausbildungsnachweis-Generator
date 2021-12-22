@@ -65,27 +65,24 @@ namespace AusbildungsnachweisGenerator.Extensions
             return new() { root };
         }
 
-        public static List<(string text, string code)> GetReplaceData(this Proof proof)
+        public static List<(string text, string code)> GetReplaceData(this Proof proof) => new()
         {
-            return new()
-            {
-                (proof.NoteNr, "{{noteNr}}"),
-                (proof.Apprentice.FullName, "{{fullName}}"),
-                (proof.Address.FullAddress, "{{fullAddress}}"),
-                (proof.Job.Name, "{{jobName}}"),
-                (proof.Job.Subject, "{{jobSubject}}"),
-                (proof.Company.Name, "{{company}}"),
-                (proof.Instructor.FullName, "{{instructor}}"),
-                (proof.Apprenticeship.StartDate.ToString("d"), "{{appStart}}"),
-                (proof.Apprenticeship.EndDate.ToString("d"), "{{appEnd}}"),
-                (proof.Year.ToString(), "{{year}}"),
-                (proof.Job.Section, "{{section}}"),
-                (proof.StartDate.ToString("d"), "{{weekStart}}"),
-                (proof.EndDate.ToString("d"), "{{weekEnd}}"),
-                (proof.Apprenticeship.HourRate?.ToString() ?? "", "{{hours}}"),
-                (proof.Apprenticeship.WithSaturday ? $"{proof.Apprenticeship.HourRate?.ToString() ?? ""}" : "---", "{{hoursSat}}"),
-                (proof.Apprenticeship.WithSaturday ? "" : "---", "{{saturday}}")
-            };
-        }
+            (proof.NoteNr, "{{noteNr}}"),
+            (proof.Apprentice.FullName, "{{fullName}}"),
+            (proof.Address.FullAddress, "{{fullAddress}}"),
+            (proof.Job.Name, "{{jobName}}"),
+            (proof.Job.Subject, "{{jobSubject}}"),
+            (proof.Company.Name, "{{company}}"),
+            (proof.Instructor.FullName, "{{instructor}}"),
+            (proof.Apprenticeship.StartDate.ToString("d"), "{{appStart}}"),
+            (proof.Apprenticeship.EndDate.ToString("d"), "{{appEnd}}"),
+            (proof.Year.ToString(), "{{year}}"),
+            (proof.Job.Section, "{{section}}"),
+            (proof.StartDate.ToString("d"), "{{weekStart}}"),
+            (proof.EndDate.ToString("d"), "{{weekEnd}}"),
+            (proof.Apprenticeship.HourRate?.ToString() ?? "", "{{hours}}"),
+            (proof.Apprenticeship.WithSaturday ? $"{proof.Apprenticeship.HourRate?.ToString() ?? ""}" : "---", "{{hoursSat}}"),
+            (proof.Apprenticeship.WithSaturday ? "" : "---", "{{saturday}}")
+        };
     }
 }

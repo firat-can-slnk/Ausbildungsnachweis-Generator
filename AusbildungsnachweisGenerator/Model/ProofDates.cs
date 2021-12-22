@@ -22,15 +22,10 @@ namespace AusbildungsnachweisGenerator.Model
             RootPath = rootPath;
         }
 
-        public IEnumerable<DateTime> WeeksInMonth(DateTime month)
-        {
-            return Weeks.Where(x => x.Month == month.Month && x.Year == month.Year);
-        }
-        public IEnumerable<DateTime> MonthsInYear(DateTime year)
-        {
-            return Months.Where(x => x.Year == year.Year);
-        }
+        public IEnumerable<DateTime> WeeksInMonth(DateTime month) => Weeks.Where(x => x.Month == month.Month && x.Year == month.Year);
+        public IEnumerable<DateTime> MonthsInYear(DateTime year) => Months.Where(x => x.Year == year.Year);
         public string MonthDirectory(DateTime month) => $"{month.Month} {month:MMMM}";
+
         public string YearDirectory(DateTime year) => $"{year:yyyy}";
     }
 }

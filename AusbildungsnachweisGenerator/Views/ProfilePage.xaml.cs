@@ -29,8 +29,8 @@ namespace AusbildungsnachweisGenerator.Views
     {
         public ProfilePage()
         {
-            this.InitializeComponent();
-            this.DataContext = new ProfilePageViewModel();
+            InitializeComponent();
+            DataContext = new ProfilePageViewModel();
         }
 
         private void ScrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -50,7 +50,7 @@ namespace AusbildungsnachweisGenerator.Views
         private void DuplicateButton_Click(object sender, RoutedEventArgs e)
         {
             var dataContext = (ProfilePageViewModel)DataContext;
-            if(!dataContext.SelectedProfile.IsForCreation)
+            if (!dataContext.SelectedProfile.IsForCreation)
             {
                 var newProfile = dataContext.SelectedProfile;
                 newProfile.Timestamp = DateTime.Now;
@@ -65,7 +65,7 @@ namespace AusbildungsnachweisGenerator.Views
 
             var newProfile = new Profile(dataContext.Job, dataContext.Instructor, dataContext.Company, dataContext.Apprenticeship, dataContext.Apprentice, dataContext.Address, dataContext.GetProofType(), DateTime.Now);
 
-            if(dataContext.SelectedProfile == null || dataContext.SelectedProfile.Timestamp == Profile.DefaultTimestamp)
+            if (dataContext.SelectedProfile == null || dataContext.SelectedProfile.Timestamp == Profile.DefaultTimestamp)
                 AppHelper.AddProfile(newProfile);
             else
             {
@@ -78,10 +78,7 @@ namespace AusbildungsnachweisGenerator.Views
 
         }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            ((ProfilePageViewModel)DataContext).LoadProfiles();
-        }
+        private void Page_Loaded(object sender, RoutedEventArgs e) => ((ProfilePageViewModel)DataContext).LoadProfiles();
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {

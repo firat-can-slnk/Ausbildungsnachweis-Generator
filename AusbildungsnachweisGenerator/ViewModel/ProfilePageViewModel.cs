@@ -66,10 +66,7 @@ namespace AusbildungsnachweisGenerator.ViewModel
         public List<Profile> Profiles
         {
             get => profiles;
-            set
-            {
-                SetProperty(ref profiles, value);
-            }
+            set => SetProperty(ref profiles, value);
         }
 
         public Profile SelectedProfile
@@ -91,18 +88,12 @@ namespace AusbildungsnachweisGenerator.ViewModel
         public bool TypeIsDaily { get => typeIsDaily; set => SetProperty(ref typeIsDaily, value); }
         public bool TypeIsWeekly { get => typeIsWeekly; set => SetProperty(ref typeIsWeekly, value); }
         public bool TypeIsPlan { get => typeIsPlan; set => SetProperty(ref typeIsPlan, value); }
-        public ProofType GetProofType()
-        {
-            return Proof.GetProofTypeFromOptions(TypeIsDaily, TypeIsWeekly, TypeIsPlan);
-        }
+        public ProofType GetProofType() => Proof.GetProofTypeFromOptions(TypeIsDaily, TypeIsWeekly, TypeIsPlan);
         public ProfilePageViewModel()
         {
         }
 
-        internal void RefreshFormValidation()
-        {
-            OnPropertyChanged(nameof(IsFormValid));
-        }
+        internal void RefreshFormValidation() => OnPropertyChanged(nameof(IsFormValid));
 
         private void SetData(Profile profile)
         {

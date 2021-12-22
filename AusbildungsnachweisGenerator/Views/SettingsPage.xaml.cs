@@ -29,7 +29,7 @@ namespace AusbildungsnachweisGenerator.Views
     {
         public SettingsPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private async void ImportButton_Click(object sender, RoutedEventArgs e)

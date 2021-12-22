@@ -59,18 +59,15 @@ namespace AusbildungsnachweisGenerator.Model
             }
         }
 
-        internal Proof GetProof(int noteNr, DateTime start, DateTime end)
-        {
-            return new Proof(noteNr.ToString(),
-                                this.Apprenticeship,
-                                this.Apprentice,
-                                this.Address,
-                                this.Instructor,
-                                this.Job,
-                                this.Company,
+        internal Proof GetProof(int noteNr, DateTime start, DateTime end) => new Proof(noteNr.ToString(),
+                                Apprenticeship,
+                                Apprentice,
+                                Address,
+                                Instructor,
+                                Job,
+                                Company,
                                 noteNr,
                                 start,
                                 end);
-        }
     }
 }

@@ -14,15 +14,15 @@ namespace AusbildungsnachweisGenerator.Helper
         {
             filter ??= new() { "*" };
 
-            var picker = new FolderPicker(); 
-            
+            var picker = new FolderPicker();
+
             AppHelper.InitializeWithWindow(picker);
 
             filter.ForEach(filter => picker.FileTypeFilter.Add(filter));
-            
-            if(string.IsNullOrEmpty(path))
+
+            if (string.IsNullOrEmpty(path))
                 picker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
-            
+
             var folder = await picker.PickSingleFolderAsync();
             return folder?.Path;
         }
@@ -52,7 +52,7 @@ namespace AusbildungsnachweisGenerator.Helper
         }
         public static void OpenWithDefaultProgram(string path)
         {
-            using Process fileopener = new Process();
+            using var fileopener = new Process();
 
             fileopener.StartInfo.FileName = "explorer";
             fileopener.StartInfo.Arguments = "\"" + path + "\"";

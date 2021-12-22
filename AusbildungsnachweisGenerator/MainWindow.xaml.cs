@@ -28,7 +28,7 @@ namespace AusbildungsnachweisGenerator
     {
         public MainWindow()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             App.NavigationView = NavigationViewMain;
             App.ContentFrame = contentFrame;
             Title = "Arbeitszeitnachweis Generator";
@@ -36,7 +36,7 @@ namespace AusbildungsnachweisGenerator
 
         private void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
-            FrameNavigationOptions navOptions = new FrameNavigationOptions
+            var navOptions = new FrameNavigationOptions
             {
                 TransitionInfoOverride = args.RecommendedNavigationTransitionInfo
             };
@@ -45,7 +45,7 @@ namespace AusbildungsnachweisGenerator
             {
                 navOptions.IsNavigationStackEnabled = false;
             }
-            Type pageType = typeof(StartPage);
+            var pageType = typeof(StartPage);
             NavigationViewMain.Header = null;
 
             if (args.IsSettingsInvoked)

@@ -26,22 +26,10 @@ namespace AusbildungsnachweisGenerator.Extensions
 
             return newDate;
         }
-        public static DateTime StartOfMonth(this DateTime dt)
-        {
-            return new DateTime(dt.Year, dt.Month, 1);
-        }
-        public static DateTime EndOfMonth(this DateTime dt)
-        {
-            return dt.StartOfMonth().AddMonths(1).AddTicks(-1);
-        }
-        public static DateTime StartOfYear(this DateTime dt)
-        {
-            return new DateTime(dt.Year, 1, 1);
-        }
-        public static DateTime EndOfYear(this DateTime dt)
-        {
-            return dt.StartOfYear().AddYears(1).AddTicks(-1);
-        }
+        public static DateTime StartOfMonth(this DateTime dt) => new DateTime(dt.Year, dt.Month, 1);
+        public static DateTime EndOfMonth(this DateTime dt) => dt.StartOfMonth().AddMonths(1).AddTicks(-1);
+        public static DateTime StartOfYear(this DateTime dt) => new DateTime(dt.Year, 1, 1);
+        public static DateTime EndOfYear(this DateTime dt) => dt.StartOfYear().AddYears(1).AddTicks(-1);
         public static IEnumerable<DateTime> GetWeeksInDateRange(DateTime startDate, DateTime endDate)
         {
             if (endDate < startDate)
@@ -49,7 +37,7 @@ namespace AusbildungsnachweisGenerator.Extensions
 
             startDate = startDate.StartOfWeek();
 
-            while(startDate <= endDate.EndOfWeek())
+            while (startDate <= endDate.EndOfWeek())
             {
                 yield return startDate;
                 startDate = startDate.AddDays(7);
@@ -62,7 +50,7 @@ namespace AusbildungsnachweisGenerator.Extensions
 
             startDate = startDate.StartOfMonth();
 
-            while(startDate < endDate.EndOfMonth())
+            while (startDate < endDate.EndOfMonth())
             {
                 yield return startDate;
                 startDate = startDate.AddMonths(1);
@@ -75,7 +63,7 @@ namespace AusbildungsnachweisGenerator.Extensions
 
             startDate = startDate.StartOfYear();
 
-            while(startDate <= endDate.EndOfYear())
+            while (startDate <= endDate.EndOfYear())
             {
                 yield return startDate;
                 startDate = startDate.AddYears(1);

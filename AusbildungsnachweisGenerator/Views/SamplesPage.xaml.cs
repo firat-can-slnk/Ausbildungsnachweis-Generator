@@ -30,7 +30,7 @@ namespace AusbildungsnachweisGenerator.Views
     {
         public SamplesPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             DataContext = new SamplesPageViewModel();
         }
 

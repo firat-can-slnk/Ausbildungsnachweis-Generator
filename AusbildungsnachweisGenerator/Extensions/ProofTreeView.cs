@@ -16,13 +16,13 @@ namespace AusbildungsnachweisGenerator.Extensions
         private ObservableCollection<ProofTreeView> children;
         private ProofTreeViewType type;
 
-        public string Content 
-        { 
-            get => content; 
-            set => SetProperty(ref content, value); 
+        public string Content
+        {
+            get => content;
+            set => SetProperty(ref content, value);
         }
-        public ObservableCollection<ProofTreeView> Children 
-        { 
+        public ObservableCollection<ProofTreeView> Children
+        {
             get => children;
             set => SetProperty(ref children, value);
         }

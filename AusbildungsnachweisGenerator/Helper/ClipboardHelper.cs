@@ -15,13 +15,7 @@ namespace AusbildungsnachweisGenerator.Helper
             dp.SetText(s);
             Clipboard.SetContent(dp);
         }
-        public static async Task<string> GetStringAsync()
-        {
-            return await GetContent()?.GetTextAsync();
-        }
-        public static DataPackageView GetContent()
-        {
-            return Clipboard.GetContent();
-        }
+        public static async Task<string> GetStringAsync() => await GetContent()?.GetTextAsync();
+        public static DataPackageView GetContent() => Clipboard.GetContent();
     }
 }

@@ -25,9 +25,6 @@ namespace AusbildungsnachweisGenerator.Model
         public bool WithSaturday { get; set; }
         public int? HourRate { get; set; }
 
-        public bool Equals(Apprenticeship obj)
-        {
-            return StartDate == obj.StartDate && EndDate == obj.EndDate && WithSaturday == obj.WithSaturday && HourRate == obj.HourRate;
-        }
+        public bool Equals(Apprenticeship obj) => StartDate == obj.StartDate && EndDate == obj.EndDate && WithSaturday == obj.WithSaturday && HourRate == obj.HourRate;
     }
 }

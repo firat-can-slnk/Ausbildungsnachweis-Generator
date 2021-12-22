@@ -69,8 +69,8 @@ namespace AusbildungsnachweisGenerator.Views
 
         public StartPage()
         {
-            this.InitializeComponent();
-            this.DataContext = new StartPageViewModel();
+            InitializeComponent();
+            DataContext = new StartPageViewModel();
             SetGenerateButtonIsEnabledBinding();
         }
         private void SetGenerateButtonIsEnabledBinding()
@@ -92,7 +92,7 @@ namespace AusbildungsnachweisGenerator.Views
         {
             try
             {
-                StartPageViewModel dataContext = vm;
+                var dataContext = vm;
 
                 var generated = 0;
 
@@ -131,7 +131,7 @@ namespace AusbildungsnachweisGenerator.Views
 
                                 DispatcherQueue.TryEnqueue(() =>
                                 {
-                                    Progress = ((double)generated / (double)max) * 100;
+                                    Progress = (generated / (double)max) * 100;
                                 });
                             }
 
@@ -148,13 +148,13 @@ namespace AusbildungsnachweisGenerator.Views
                         CloseButtonText = "Schließen",
                         PrimaryButtonText = "Speicherort öffnen"
                     };
-                    dialog.XamlRoot = this.Content.XamlRoot;
+                    dialog.XamlRoot = Content.XamlRoot;
                     var result = await dialog.ShowAsync();
                     if (result == ContentDialogResult.Primary)
                         IOHelper.OpenWithDefaultProgram(dates.RootPath);
                 });
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 DispatcherQueue.TryEnqueue(async () =>
                 {
@@ -177,7 +177,7 @@ namespace AusbildungsnachweisGenerator.Views
 
             var path = await IOHelper.SelectFolder();
             if (path != null)
-                dataContext.FilePath = path; 
+                dataContext.FilePath = path;
         }
 
         private void SampleButton_Click(object sender, RoutedEventArgs e)
@@ -196,21 +196,15 @@ namespace AusbildungsnachweisGenerator.Views
             if (File.Exists(filePath))
                 IOHelper.OpenWithDefaultProgram(filePath);
         }
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            ((StartPageViewModel)DataContext).LoadProfiles();
-        }
+        private void Page_Loaded(object sender, RoutedEventArgs e) => ((StartPageViewModel)DataContext).LoadProfiles();
 
         private void CalendarDatePicker_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
         {
-            if(DataContext is StartPageViewModel dc)
+            if (DataContext is StartPageViewModel dc)
                 dc.UpdateDates();
         }
 
-        private void HelpButton_Click(object sender, RoutedEventArgs args)
-        {
-            HelpTeachingTipProfileHeader.IsOpen = true;
-        }
+        private void HelpButton_Click(object sender, RoutedEventArgs args) => HelpTeachingTipProfileHeader.IsOpen = true;
         private void ShowNextTeachingTip(TeachingTip sender, object args)
         {
             sender.IsOpen = false;
@@ -219,23 +213,23 @@ namespace AusbildungsnachweisGenerator.Views
             {
                 HelpTeachingTipTimeFrameHeader.IsOpen = true;
             }
-            else if(sender == HelpTeachingTipTimeFrameHeader)
+            else if (sender == HelpTeachingTipTimeFrameHeader)
             {
                 HelpTeachingTipTypeHeader.IsOpen = true;
             }
-            else if(sender == HelpTeachingTipTypeHeader)
+            else if (sender == HelpTeachingTipTypeHeader)
             {
                 HelpTeachingTipSaveDirectoryHeader.IsOpen = true;
             }
-            else if(sender == HelpTeachingTipSaveDirectoryHeader)
+            else if (sender == HelpTeachingTipSaveDirectoryHeader)
             {
                 HelpTeachingTipGenerateButton.IsOpen = true;
             }
-            else if(sender == HelpTeachingTipGenerateButton)
+            else if (sender == HelpTeachingTipGenerateButton)
             {
                 HelpTeachingTipSampleButton.IsOpen = true;
             }
-            else if(sender == HelpTeachingTipSampleButton)
+            else if (sender == HelpTeachingTipSampleButton)
             {
                 HelpTeachingTipProofTreeViewSection.IsOpen = true;
             }

@@ -21,8 +21,8 @@ namespace AusbildungsnachweisGenerator.ViewModel
         private Profile selectedProfile;
         private List<Profile> profiles;
 
-        public DateTimeOffset StartDate 
-        { 
+        public DateTimeOffset StartDate
+        {
             get => startDate;
             set
             {
@@ -32,8 +32,8 @@ namespace AusbildungsnachweisGenerator.ViewModel
                 OnPropertyChanged(nameof(ProofTreeViewMain));
             }
         }
-        public DateTimeOffset EndDate 
-        { 
+        public DateTimeOffset EndDate
+        {
             get => endDate;
             set
             {
@@ -44,8 +44,8 @@ namespace AusbildungsnachweisGenerator.ViewModel
             }
         }
 
-        public string FilePath 
-        { 
+        public string FilePath
+        {
             get => filePath;
             set
             {
@@ -53,9 +53,9 @@ namespace AusbildungsnachweisGenerator.ViewModel
                 OnPropertyChanged(nameof(IsFormValid));
             }
         }
-        
-        public List<Profile> Profiles 
-        { 
+
+        public List<Profile> Profiles
+        {
             get => profiles;
             set
             {
@@ -63,15 +63,15 @@ namespace AusbildungsnachweisGenerator.ViewModel
                 OnPropertyChanged(nameof(IsFormValid));
             }
         }
-        
-        public Profile SelectedProfile 
-        { 
+
+        public Profile SelectedProfile
+        {
             get => selectedProfile;
             set
             {
                 SetProperty(ref selectedProfile, value);
                 OnPropertyChanged(nameof(IsFormValid));
-                if(selectedProfile != null && !selectedProfile.IsForCreation)
+                if (selectedProfile != null && !selectedProfile.IsForCreation)
                 {
                     if (selectedProfile.Apprenticeship?.StartDate is DateTimeOffset start)
                     {
@@ -84,9 +84,9 @@ namespace AusbildungsnachweisGenerator.ViewModel
                 }
             }
         }
-        
-        public bool IsFormValid => StartDate < EndDate && 
-            FilePath != null && 
+
+        public bool IsFormValid => StartDate < EndDate &&
+            FilePath != null &&
             !FilePath.Any(x => Path.GetInvalidPathChars().Contains(x)) &&
             SelectedProfile != null;
         public string HelpText => GetHelpText();
@@ -98,10 +98,10 @@ namespace AusbildungsnachweisGenerator.ViewModel
 
             var dates = new ProofDates(start, end, "");
 
-            int weeksCount = dates.Weeks.Count();
-            int monthsCount = dates.Months.Count();
-            int yearCount = dates.Years.Count();
-            int proofCount = weeksCount;
+            var weeksCount = dates.Weeks.Count();
+            var monthsCount = dates.Months.Count();
+            var yearCount = dates.Years.Count();
+            var proofCount = weeksCount;
 
             var sb = new StringBuilder();
 
@@ -128,15 +128,9 @@ namespace AusbildungsnachweisGenerator.ViewModel
         public bool TypeIsWeekly { get; set; } = false;
         public bool TypeIsPlan { get; set; } = false;
 
-        public ProofType SelectedProofType()
-        {
-            return Proof.GetProofTypeFromOptions(TypeIsDaily, TypeIsWeekly, TypeIsPlan);
-        }
+        public ProofType SelectedProofType() => Proof.GetProofTypeFromOptions(TypeIsDaily, TypeIsWeekly, TypeIsPlan);
 
-        public void LoadProfiles()
-        {
-            Profiles = AppHelper.GetSettings().Profiles;
-        }
+        public void LoadProfiles() => Profiles = AppHelper.GetSettings().Profiles;
 
         internal void UpdateDates()
         {

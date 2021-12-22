@@ -18,15 +18,12 @@ namespace AusbildungsnachweisGenerator
 
         private static string settingsPath = @$"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\FiratCanSueluenkue\AusbildungsnachweisGenerator";
         private static string settingsFilePath = @$"{settingsPath}\config.json";
-        private static string GetSettingsFileContent()
-        {
-            return File.ReadAllText(settingsFilePath);
-        }
+        private static string GetSettingsFileContent() => File.ReadAllText(settingsFilePath);
         public static Settings GetSettings()
         {
             try
             {
-                if(!Directory.Exists(settingsPath))
+                if (!Directory.Exists(settingsPath))
                     Directory.CreateDirectory(settingsPath);
 
                 if (!File.Exists(settingsFilePath))
@@ -40,10 +37,7 @@ namespace AusbildungsnachweisGenerator
                 return null;
             }
         }
-        public static void SaveSettings(Settings settings)
-        {
-            File.WriteAllText(settingsFilePath, JsonConvert.SerializeObject(settings));
-        }
+        public static void SaveSettings(Settings settings) => File.WriteAllText(settingsFilePath, JsonConvert.SerializeObject(settings));
         public static void AddProfile(Profile profile)
         {
             var settings = GetSettings();
