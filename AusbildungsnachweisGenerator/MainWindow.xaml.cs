@@ -63,6 +63,11 @@ namespace AusbildungsnachweisGenerator
                 pageType = typeof(ProfilePage);
                 NavigationViewMain.Header = "Profile";
             }
+            else if (args.InvokedItem.Equals(SamplesPageItem.Content.ToString()))
+            {
+                pageType = typeof(SamplesPage);
+                NavigationViewMain.Header = "Vorlagen";
+            }
 
             NavigationViewMain.AlwaysShowHeader = !string.IsNullOrEmpty(NavigationViewMain.Header?.ToString());
 

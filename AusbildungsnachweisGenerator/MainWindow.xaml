@@ -23,6 +23,10 @@
                 x:Name="ProfilePageItem"
                 Content="Profile"
                 Icon="ContactInfo" />
+            <NavigationViewItem
+                x:Name="SamplesPageItem"
+                Content="Vorlagen"
+                Icon="Document" />
         </NavigationView.MenuItems>
         <Frame x:Name="contentFrame" />
     </NavigationView>

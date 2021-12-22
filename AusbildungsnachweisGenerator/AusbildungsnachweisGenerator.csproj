@@ -13,6 +13,7 @@
 	  <WindowsPackageType>None</WindowsPackageType>
   </PropertyGroup>
   <ItemGroup>
+    <Content Remove="Assets\Ausbildungsnachweis_Original.pdf" />
     <Content Remove="Assets\Ausbildungsnachweis_Variable_Cover.docx" />
     <Content Remove="Assets\Ausbildungsnachweis_Variable_Daily.docx" />
     <Content Remove="Assets\Ausbildungsnachweis_Variable_DailyWithPlan.docx" />
@@ -21,10 +22,23 @@
     <Content Remove="Assets\Ausbildungsnachweis_Variable_WeeklyWithPlan.docx" />
     <Content Remove="Assets\file.png" />
     <Content Remove="Assets\folder.png" />
+    <Content Remove="Assets\ProofImages\Ausbildungsnachweis_Original-1.jpg" />
+    <Content Remove="Assets\ProofImages\Ausbildungsnachweis_Original-2.jpg" />
+    <Content Remove="Assets\ProofImages\Ausbildungsnachweis_Original-3.jpg" />
+    <Content Remove="Assets\ProofImages\Ausbildungsnachweis_Original-4.jpg" />
+    <Content Remove="Assets\ProofImages\Ausbildungsnachweis_Original-5.jpg" />
+    <Content Remove="Assets\ProofImages\Ausbildungsnachweis_Original-6.jpg" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Assets\file.png" />
     <None Remove="Assets\folder.png" />
+    <None Remove="Assets\ProofImages\Ausbildungsnachweis_Original-1.jpg" />
+    <None Remove="Assets\ProofImages\Ausbildungsnachweis_Original-2.jpg" />
+    <None Remove="Assets\ProofImages\Ausbildungsnachweis_Original-3.jpg" />
+    <None Remove="Assets\ProofImages\Ausbildungsnachweis_Original-4.jpg" />
+    <None Remove="Assets\ProofImages\Ausbildungsnachweis_Original-5.jpg" />
+    <None Remove="Assets\ProofImages\Ausbildungsnachweis_Original-6.jpg" />
+    <None Remove="Views\SamplesPage.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,6 +52,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Assets\Ausbildungsnachweis_Original.pdf" />
     <EmbeddedResource Include="Assets\Ausbildungsnachweis_Variable_Cover.docx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -62,9 +77,28 @@
     <EmbeddedResource Include="Assets\folder.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Assets\ProofImages\Ausbildungsnachweis_Original-1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\ProofImages\Ausbildungsnachweis_Original-2.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\ProofImages\Ausbildungsnachweis_Original-3.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\ProofImages\Ausbildungsnachweis_Original-4.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\ProofImages\Ausbildungsnachweis_Original-5.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\ProofImages\Ausbildungsnachweis_Original-6.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
     <PackageReference Include="FreeSpire.Doc" Version="9.9.7" />
     <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.0" />
@@ -83,6 +117,9 @@
     <None Update="Assets\ProofSample.docx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\SamplesPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\SettingsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
