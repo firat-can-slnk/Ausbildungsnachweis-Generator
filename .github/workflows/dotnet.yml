@@ -52,7 +52,7 @@ jobs:
         Configuration: ${{ matrix.configuration }}
         
     - name: Create ZIP of unpackaged app
-      run: Compress-Archive AusbildungsnachweisGenerator/bin/Release/publish/* 'Ausbildungsnachweis-Generator.zip'
+      run: Compress-Archive AusbildungsnachweisGenerator/bin/x64/Release/net6*/publish/* 'Ausbildungsnachweis-Generator.zip'
         
     - name: Upload unpackaged app
       uses: actions/upload-artifact@v2
