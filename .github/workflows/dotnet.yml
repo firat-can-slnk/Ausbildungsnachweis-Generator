@@ -1,0 +1,75 @@
+name: .NET Desktop
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+
+  build:
+
+    strategy:
+      matrix:
+        configuration: [Release]
+
+    runs-on: windows-2022  # For a list of available runner types, refer to
+                             # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+
+    env:
+      Solution_Name: AusbildungsnachweisGenerator                       # Replace with your solution name, i.e. MyWpfApp.sln.
+      Project_Directory: AusbildungsnachweisGenerator
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    # Install the .NET Core workload
+    - name: Install .NET 6
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.x.x
+
+    # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v1.0.2
+
+
+    # Restore the application to populate the obj folder with RuntimeIdentifiers
+    - name: Restore the application
+      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
+      env:
+        Configuration: ${{ matrix.configuration }}
+
+    # Create the unpackaged app
+    - name: Build unpackaged app
+      run: msbuild $env:Solution_Name /t:Publish /p:WindowsPackageType=None /p:Configuration=$env:Configuration /p:Platform=x64
+      env:
+        Configuration: ${{ matrix.configuration }}
+        
+    - name: Create ZIP of unpackaged app
+      run: Compress-Archive AusbildungsnachweisGenerator/bin/x64/Release/net6*/publish/* 'Ausbildungsnachweis-Generator.zip'
+        
+    - name: Upload unpackaged app
+      uses: actions/upload-artifact@v2
+      with:
+        name: 'Unpackaged app'
+        path: 'Ausbildungsnachweis-Generator.zip'
+        
+
+    - name: Create GH release
+      if: github.ref_name == 'main'
+      uses: softprops/action-gh-release@v1
+      with:
+        draft: true
+        prerelease: false
+        name: '0.${{ github.run_number }}.${{ github.run_attempt }}.0'
+        tag_name: 'v0.${{ github.run_number }}.${{ github.run_attempt }}.0'
+        body: ''
+        files: |
+          Ausbildungsnachweis-Generator.zip
+        fail_on_unmatched_files: false
